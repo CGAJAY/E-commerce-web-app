@@ -117,6 +117,29 @@ a{
 	background-color: orange;
 	color: var(--white);
 }
+.cart{
+	background: transparent;
+	
+}
+.cart-container{
+	position: relative;
+	border: 1px solid grey;
+	padding: 3px;
+}
+.cart-container span{
+	position: absolute;
+	right: -4px;
+	top: -3px;
+	background-color: black;
+	color: white;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	font-size: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
 @media (max-device-width: 480px){
 	.container{
