@@ -1,6 +1,7 @@
 :root {
 	--primary-color: #000000;
 	--secondary-color: #ffffff;
+	--background-color: #edeff1;
 	--accent-color: #ffd619;
 }
 * {
@@ -21,9 +22,9 @@ nav {
 	padding: 30px 50px;
 	background-color: antiquewhite;
 }
-img {
-	width: 50px;
-	height: 50px;
+#logo {
+	width: 30px;
+	height: 30px;
 }
 #categories {
 	display: flex;
@@ -39,6 +40,57 @@ img {
 	display: flex;
 	align-items: center;
 }
+#account-info img {
+	width: 30px;
+	height: 30px;
+}
+#account-info div:not(:last-child) {
+	margin-right: 20px;
+}
 #search-cont {
 	display: flex;
+	align-items: center;
+	position: relative;
+}
+input[id="search"] {
+	background-color: var(--background-color);
+	border: 1px solid var(--secondary-color);
+	outline: none;
+	font-size: 20px;
+	padding: 8px 20px;
+	transition: border 1s ease-in-out;
+}
+input[id="search"]::placeholder {
+	color: var(--primary-color);
+	opacity: 1;
+}
+input[id="search"]:focus {
+	border: 1px solid var(--primary-color);
+}
+#search-btn {
+	position: absolute;
+	right: 0;
+}
+#wishlist-cont,
+#cart-cont {
+	position: relative;
+}
+#wishlist-cont a,
+#cart-cont a {
+	position: relative;
+	z-index: 100;
+}
+.amount {
+	display: inline-block;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: -25px;
+	background-color: var(--accent-color);
+	color: var(--primary-color);
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	font-size: 20px;
 }
