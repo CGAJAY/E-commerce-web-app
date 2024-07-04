@@ -1,4 +1,4 @@
-const product = [
+let product = [
 	{
 		id: 1,
 		source:
@@ -27,3 +27,36 @@ const product = [
 		description: "Originals",
 	},
 ];
+
+let container = document.querySelector(".container");
+function getProduct(arr) {
+	arr.forEach(render);
+}
+function render(obj) {
+	// Grabbing the container to hold all interested products
+	let interestedProductCont = document.querySelector(
+		".interested-product-cont"
+	);
+	// Creating parent container forEach product
+	let interestedProduct = document.createElement("div");
+	interestedProduct.classList.add("interested-product");
+	let interestedProductPart1 =
+		document.createElement("div");
+	interestedProduct.classList.add("part1");
+	let interestedProductLink = document.createElement("a");
+	interestedProductLink.href = "https://www.google.com";
+	interestedProductLink.classList.add("product-link");
+	// creating img container to hold product image
+	let interestedProductimage =
+		document.createElement("img");
+	interestedProductimage.src = obj.source;
+	interestedProductimage.classList.add("product-img");
+
+	interestedProductPart1.appendChild(
+		interestedProductimage
+	);
+	interestedProductLink.appendChild(interestedProductPart1);
+	interestedProduct.appendChild(interestedProductLink);
+	interestedProductCont.appendChild(interestedProduct);
+}
+console.log(getProduct(product));
