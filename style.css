@@ -140,7 +140,7 @@ input[id="search"]:focus {
 .interested {
 	padding-top: 30px;
 	padding-bottom: 80px;
-	/* background-color: aqua; */
+	background-color: aqua;
 }
 
 .interested-product-cont {
@@ -177,4 +177,20 @@ input[id="search"]:focus {
 	padding: 5px 10px;
 	border: none;
 	background-color: var(--secondary-color);
+	transition: bottom 0.3s ease-in-out;
+}
+.interested-product:hover .price {
+	bottom: 10px;
+}
+.part2 {
+	padding-left: 10px;
+}
+.product-title {
+	color: var(--primary-color);
+	margin: 10px 0;
+}
+.product-desc {
+	display: block;
+	color: var(--hover-color);
+	margin-bottom: 10px;
 }
