@@ -30,9 +30,9 @@ let product = [
 
 let container = document.querySelector(".container");
 function getProduct(arr) {
-	arr.forEach(render);
+	arr.forEach(interestedProductRender);
 }
-function render(obj) {
+function interestedProductRender(obj) {
 	// Grabbing the container to hold all interested products
 	let interestedProductCont = document.querySelector(
 		".interested-product-cont"
@@ -40,20 +40,48 @@ function render(obj) {
 	// Creating parent container forEach product
 	let interestedProduct = document.createElement("div");
 	interestedProduct.classList.add("interested-product");
-	let interestedProductPart1 =
-		document.createElement("div");
-	interestedProduct.classList.add("part1");
+	// Creating the link to navigate to more product details
 	let interestedProductLink = document.createElement("a");
 	interestedProductLink.href = "https://www.google.com";
 	interestedProductLink.classList.add("product-link");
+	// Creating part1 of the parent container
+	let interestedProductPart1 =
+		document.createElement("div");
+	interestedProduct.classList.add("part1");
 	// creating img container to hold product image
 	let interestedProductimage =
 		document.createElement("img");
 	interestedProductimage.src = obj.source;
 	interestedProductimage.classList.add("product-img");
+	// Creating the container to hold the liked button
+	let likeInterestedProductCont =
+		document.createElement("div");
+	likeInterestedProductCont.classList.add(
+		"product-like-btn"
+	);
+	// Create the like btn
+	let likeInterestedProductBtn =
+		document.createElement("img");
+	likeInterestedProductBtn.src =
+		"https://cdn4.iconfinder.com/data/icons/basic-ui-2-line/32/heart-love-like-likes-loved-favorite-512.png";
+	likeInterestedProductBtn.classList.add("like");
+	// Create the price btn
+	let priceBtn = document.createElement("button");
+	priceBtn.textContent = `$${obj.price}`;
+	priceBtn.classList.add("price");
 
+	// interestedProductLink.appendChild(
+	// 	likeInterestedProductCont
+	// );
 	interestedProductPart1.appendChild(
 		interestedProductimage
+	);
+	interestedProductPart1.appendChild(priceBtn);
+	likeInterestedProductCont.appendChild(
+		likeInterestedProductBtn
+	);
+	interestedProductPart1.appendChild(
+		likeInterestedProductCont
 	);
 	interestedProductLink.appendChild(interestedProductPart1);
 	interestedProduct.appendChild(interestedProductLink);
