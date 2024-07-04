@@ -135,3 +135,46 @@ input[id="search"]:focus {
 .hero-btn:hover {
 	color: var(--hover-color);
 }
+
+/* Interested Section  */
+.interested {
+	padding-top: 30px;
+	padding-bottom: 80px;
+	/* background-color: aqua; */
+}
+
+.interested-product-cont {
+	display: flex;
+	flex-wrap: wrap;
+}
+.interested-product {
+	width: 316px;
+	margin-right: 8px;
+}
+.part1 {
+	position: relative;
+}
+.product-img {
+	display: block;
+	min-width: 100%;
+	max-width: 100%;
+	max-height: 100%;
+	max-height: 100%;
+}
+.product-like-btn {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+.like {
+	height: 30px;
+	width: 30px;
+}
+.price {
+	position: absolute;
+	bottom: 0px;
+	left: 5px;
+	padding: 5px 10px;
+	border: none;
+	background-color: var(--secondary-color);
+}
