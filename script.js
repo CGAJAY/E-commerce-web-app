@@ -158,6 +158,8 @@ function interestedProductRender(obj) {
 }
 getProduct(product);
 
+// script.js
+
 let currentIndex = 0;
 
 // Function to show the slide based on the index
@@ -166,6 +168,25 @@ function showSlide(index) {
 		".interested-product"
 	);
 	const totalSlides = slides.length;
+
+	// 	// Adjust currentIndex for seamless infinite scrolling
+	// 	if (index >= totalSlides - 4) {
+	// 		currentIndex = 0;
+	// 	} else if (index < 0) {
+	// 		currentIndex = totalSlides - 1;
+	// 	} else {
+	// 		currentIndex = index;
+	// 	}
+
+	// 	// Calculate the offset for the slide position
+	// 	const offset = -currentIndex * 50;
+	// 	const slideContainer = document.querySelector(
+	// 		".interested-product-cont"
+	// 	);
+	// 	slideContainer.style.transition =
+	// 		"transform 0.5s ease-in-out";
+	// 	slideContainer.style.transform = `translateX(${offset}%)`;
+	// }
 
 	// Calculate the number of visible slides based on the container width
 	const containerWidth = document.querySelector(
@@ -177,7 +198,7 @@ function showSlide(index) {
 	);
 
 	// Adjust currentIndex for infinite scrolling
-	if (index >= totalSlides - visibleSlides + 1) {
+	if (index >= totalSlides - visibleSlides + 2) {
 		currentIndex = 0;
 	} else if (index < 0) {
 		currentIndex = totalSlides - visibleSlides;
@@ -190,16 +211,39 @@ function showSlide(index) {
 	const slideContainer = document.querySelector(
 		".interested-product-cont"
 	);
+	slideContainer.style.transition =
+		"transform 0.5s ease-in-out";
 	slideContainer.style.transform = `translateX(${offset}%)`;
 }
 
+// Function to move to the next slide
 function nextSlide() {
 	showSlide(currentIndex + 1);
 }
 
+// Function to move to the previous slide
 function prevSlide() {
 	showSlide(currentIndex - 1);
 }
 
-// Initialize the carousel
-showSlide(currentIndex);
+// Initialize the carousel by showing the first slide
+window.addEventListener("load", () => {
+	showSlide(currentIndex);
+});
+
+// Optional: Auto-slide functionality
+let autoSlideInterval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
+
+// Stop auto-slide when user interacts
+document
+	.querySelector(".interested-product-cont")
+	.addEventListener("mouseover", () => {
+		clearInterval(autoSlideInterval);
+	});
+
+// Resume auto-slide when user stops interacting
+document
+	.querySelector(".interested-product-cont")
+	.addEventListener("mouseout", () => {
+		autoSlideInterval = setInterval(nextSlide, 3000);
+	});

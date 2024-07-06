@@ -140,20 +140,25 @@ input[id="search"]:focus {
 }
 
 /* Interested Section  */
+.main-interested {
+	padding: 0 20px;
+}
 .interested {
 	padding-top: 30px;
 	padding-bottom: 80px;
 	position: relative;
+
 	overflow: hidden;
 }
 
 .interested-product-cont {
 	display: flex;
+	padding: 0 20px;
 }
 .interested-product {
 	min-width: 316px;
 	width: 316px;
-	margin-right: 8px;
+	margin-right: 15px;
 }
 .part1 {
 	position: relative;
