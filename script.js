@@ -26,6 +26,60 @@ let product = [
 		title: "Samba OG Shoes",
 		description: "Originals",
 	},
+	{
+		id: 4,
+		source:
+			"https://assets.adidas.com/images/w_600,f_auto,q_auto/0d61e074ee424217b708fc25fef17b14_9366/Adicolor_3-Stripes_Tube_Top_Black_IX7823_21_model.jpg",
+		liked: false,
+		price: 30,
+		title: "Adicolor 3-Stripes Tube Top",
+		description: "Originals",
+	},
+	{
+		id: 5,
+		source:
+			"https://assets.adidas.com/images/w_600,f_auto,q_auto/1af937cfedab43f680b303b57d9d784c_9366/adidas_x_FARM_Rio_Denim_Track_Top_Blue_IW0793_21_model.jpg",
+		liked: false,
+		price: 130,
+		title: "adidas x FARM Rio Denim Track Top",
+		description: "Originals",
+	},
+	{
+		id: 6,
+		source:
+			"https://assets.adidas.com/images/w_600,f_auto,q_auto/d0c141f2660a4a11b90972cc72e1e83c_9366/Power_Boxy_French_Terry_3-Stripes_Tank_Top_White_IW3188_21_model.jpg",
+		liked: false,
+		price: 45,
+		title: "Power Boxy French Terry 3-Stripes Tank Top",
+		description: "Performance",
+	},
+	{
+		id: 7,
+		source:
+			"https://assets.adidas.com/images/w_600,f_auto,q_auto/981b637c5d3b40d49d6f24b8a9843629_9366/80s_Track_Pants_Blue_JC6148_21_model.jpg",
+		liked: false,
+		price: 80,
+		title: "'80s Track Pants",
+		description: "Originals",
+	},
+	{
+		id: 8,
+		source:
+			"https://assets.adidas.com/images/w_600,f_auto,q_auto/e13df4e9d1d34ca39a8b6fa0e86185b0_9366/Adicolor_Neuclassics_Hoodie_Black_IW0975_23_hover_model.jpg",
+		liked: false,
+		price: 70,
+		title: "Adicolor Neuclassics Hoodie",
+		description: "Originals",
+	},
+	{
+		id: 9,
+		source:
+			"https://assets.adidas.com/images/w_600,f_auto,q_auto/55b640477c7c44dcbce23556aebe6d8e_9366/Gazelle_Bold_Shoes_Black_IE0876_01_standard.jpg",
+		liked: false,
+		price: 120,
+		title: "Gazelle Bold Shoes",
+		description: "Originals",
+	},
 ];
 
 let container = document.querySelector(".container");
@@ -47,7 +101,7 @@ function interestedProductRender(obj) {
 	// Creating part1 of the parent container
 	let interestedProductPart1 =
 		document.createElement("div");
-	interestedProduct.classList.add("part1");
+	interestedProductPart1.classList.add("part1");
 	// creating img container to hold product image
 	let interestedProductimage =
 		document.createElement("img");
@@ -69,21 +123,36 @@ function interestedProductRender(obj) {
 	let priceBtn = document.createElement("button");
 	priceBtn.textContent = `$${obj.price}`;
 	priceBtn.classList.add("price");
+	// Creating part2 of the parent container
+	let interestedProductPart2 =
+		document.createElement("div");
+	interestedProduct.classList.add("part2");
+	// Create interested Product title
+	let interestedProductTitle = document.createElement("p");
+	interestedProductTitle.textContent = obj.title;
+	interestedProductTitle.classList.add("product-title");
+	// Create interested Product description
+	let interestedProductDesc =
+		document.createElement("span");
+	interestedProductDesc.textContent = obj.description;
+	interestedProductDesc.classList.add("product-desc");
 
-	// interestedProductLink.appendChild(
-	// 	likeInterestedProductCont
-	// );
-	interestedProductPart1.appendChild(
-		interestedProductimage
-	);
-	interestedProductPart1.appendChild(priceBtn);
 	likeInterestedProductCont.appendChild(
 		likeInterestedProductBtn
 	);
 	interestedProductPart1.appendChild(
+		interestedProductimage
+	);
+	interestedProductPart1.appendChild(
 		likeInterestedProductCont
 	);
+	interestedProductPart1.appendChild(priceBtn);
+	interestedProductPart2.appendChild(
+		interestedProductTitle
+	);
+	interestedProductPart2.appendChild(interestedProductDesc);
 	interestedProductLink.appendChild(interestedProductPart1);
+	interestedProductLink.appendChild(interestedProductPart2);
 	interestedProduct.appendChild(interestedProductLink);
 	interestedProductCont.appendChild(interestedProduct);
 }

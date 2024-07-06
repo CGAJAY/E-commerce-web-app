@@ -10,6 +10,9 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+a {
+	text-decoration: none;
+}
 header {
 	background-color: var(--primary-color);
 	color: var(--secondary-color);
@@ -140,7 +143,7 @@ input[id="search"]:focus {
 .interested {
 	padding-top: 30px;
 	padding-bottom: 80px;
-	background-color: aqua;
+	/* background-color: aqua; */
 }
 
 .interested-product-cont {
