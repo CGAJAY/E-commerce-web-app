@@ -143,14 +143,15 @@ input[id="search"]:focus {
 .interested {
 	padding-top: 30px;
 	padding-bottom: 80px;
-	/* background-color: aqua; */
+	position: relative;
+	overflow: hidden;
 }
 
 .interested-product-cont {
 	display: flex;
-	flex-wrap: wrap;
 }
 .interested-product {
+	min-width: 316px;
 	width: 316px;
 	margin-right: 8px;
 }
@@ -196,4 +197,31 @@ input[id="search"]:focus {
 	display: block;
 	color: var(--hover-color);
 	margin-bottom: 10px;
+}
+
+.nav-button {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: rgba(0, 0, 0, 0.5);
+	border: none;
+	color: white;
+	font-size: 24px;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 50%;
+	user-select: none;
+	z-index: 1000;
+}
+
+.nav-button.left {
+	left: 10px;
+}
+
+.nav-button.right {
+	right: 10px;
+}
+
+.nav-button:hover {
+	background-color: rgba(0, 0, 0, 0.7);
 }

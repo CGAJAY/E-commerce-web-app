@@ -156,4 +156,50 @@ function interestedProductRender(obj) {
 	interestedProduct.appendChild(interestedProductLink);
 	interestedProductCont.appendChild(interestedProduct);
 }
-console.log(getProduct(product));
+getProduct(product);
+
+let currentIndex = 0;
+
+// Function to show the slide based on the index
+function showSlide(index) {
+	const slides = document.querySelectorAll(
+		".interested-product"
+	);
+	const totalSlides = slides.length;
+
+	// Calculate the number of visible slides based on the container width
+	const containerWidth = document.querySelector(
+		".interested-product-cont"
+	).offsetWidth;
+	const slideWidth = slides[0].offsetWidth;
+	const visibleSlides = Math.floor(
+		containerWidth / slideWidth
+	);
+
+	// Adjust currentIndex for infinite scrolling
+	if (index >= totalSlides - visibleSlides + 1) {
+		currentIndex = 0;
+	} else if (index < 0) {
+		currentIndex = totalSlides - visibleSlides;
+	} else {
+		currentIndex = index;
+	}
+
+	// Calculate the offset for the slide position
+	const offset = (-currentIndex * 100) / visibleSlides;
+	const slideContainer = document.querySelector(
+		".interested-product-cont"
+	);
+	slideContainer.style.transform = `translateX(${offset}%)`;
+}
+
+function nextSlide() {
+	showSlide(currentIndex + 1);
+}
+
+function prevSlide() {
+	showSlide(currentIndex - 1);
+}
+
+// Initialize the carousel
+showSlide(currentIndex);
