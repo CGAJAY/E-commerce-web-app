@@ -1,16 +1,17 @@
 {
-	"name": "server",
+	"name": "e-commerce-web-app",
 	"version": "1.0.0",
-	"description": "E-commerce web app",
+	"main": "server/server.js",
 	"type": "module",
-	"main": "server.js",
 	"scripts": {
-		"start": "node server.js",
-		"dev": "nodemon server.js"
+		"dev": "nodemon server/server.js"
 	},
-	"author": "DEVAJAY",
+	"keywords": [],
+	"author": "",
 	"license": "ISC",
+	"description": "",
 	"dependencies": {
+		"bcrypt": "^5.1.1",
 		"dotenv": "^16.4.5",
 		"express": "^4.21.0",
 		"mongoose": "^8.7.0"
