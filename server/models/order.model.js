@@ -1,22 +1,5 @@
 import mongoose from "mongoose";
 
-// Order Item Schema (similar to cart item)
-const orderItemSchema = new mongoose.Schema(
-	{
-		productId: {
-			type: Schema.Types.ObjectId,
-			ref: "Product", // Refers to Product collection
-			required: true,
-		},
-		quantity: {
-			type: Number,
-			required: true,
-			default: 1,
-		},
-	},
-	{ timestamps: true } // Enable timestamps
-);
-
 // Order Schema
 const orderSchema = new mongoose.Schema({
 	userId: {
@@ -24,7 +7,20 @@ const orderSchema = new mongoose.Schema({
 		ref: "User", // Refers to User collection
 		required: true,
 	},
-	products: [orderItemSchema], // Array of ordered products
+	products: [
+		{
+			productId: {
+				type: Schema.Types.ObjectId,
+				ref: "Product", // Refers to Product collection
+				required: true,
+			},
+			quantity: {
+				type: Number,
+				required: true,
+				default: 1,
+			},
+		},
+	], // Array of ordered products
 	totalPrice: {
 		type: Number,
 		required: true,
