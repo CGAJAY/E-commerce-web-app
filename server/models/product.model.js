@@ -13,8 +13,8 @@ const productSchema = new mongoose.Schema(
 			required: true,
 		},
 		category: {
-			// have it in its own collection
-			type: String,
+			type: Schema.Types.ObjectId,
+			ref: "Category", // Reference to the Category model
 			required: true,
 		},
 		stock: {
