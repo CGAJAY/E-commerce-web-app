@@ -1,18 +1,21 @@
 import mongoose from "mongoose";
 
 // Order Item Schema (similar to cart item)
-const orderItemSchema = new mongoose.Schema({
-	productId: {
-		type: Schema.Types.ObjectId,
-		ref: "Product", // Refers to Product collection
-		required: true,
+const orderItemSchema = new mongoose.Schema(
+	{
+		productId: {
+			type: Schema.Types.ObjectId,
+			ref: "Product", // Refers to Product collection
+			required: true,
+		},
+		quantity: {
+			type: Number,
+			required: true,
+			default: 1,
+		},
 	},
-	quantity: {
-		type: Number,
-		required: true,
-		default: 1,
-	},
-});
+	{ timestamps: true } // Enable timestamps
+);
 
 // Order Schema
 const orderSchema = new mongoose.Schema({
