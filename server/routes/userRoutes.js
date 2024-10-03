@@ -6,10 +6,10 @@ import {
 	updateUserProfile,
 	deleteUser,
 } from "../controllers/userController.js";
-import {
-	protectRoute,
-	adminOnly,
-} from "../middleware/authMiddleware.js"; // Assuming you'll have middleware for authentication
+// import {
+// 	protectRoute,
+// 	adminOnly,
+// } from "../middleware/authMiddleware.js"; // middleware for authentication
 
 const router = express.Router();
 

@@ -32,6 +32,7 @@ const userSchema = new Schema(
 			enum: ["customer", "admin"], // Only allow 'customer' or 'admin' roles
 			default: "customer", // Default role is set to 'customer'
 		},
+		cart: [],
 	},
 	{ timestamps: true } // Enable timestamps
 );
