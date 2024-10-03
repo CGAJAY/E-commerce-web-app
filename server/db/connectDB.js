@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-import User from "../models/user.models.js"; // Importing the User model
-import Product from "../models/product.model.js"; // Importing the Product model
-import Order from "../models/order.model.js"; // Importing the Order model
 import { configDotenv } from "dotenv";
+
+configDotenv(); // Load environment variables
 
 // Function to establish a connection to the database
 const connectDB = async () => {
@@ -23,4 +22,4 @@ const connectDB = async () => {
 };
 
 // Export the connectDB and Models
-export { connectDB, User, Product, Order };
+export { connectDB };
