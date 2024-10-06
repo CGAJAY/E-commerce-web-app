@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs"; // For hashing passwords
+import bcrypt from "bcrypt"; // For hashing passwords
 
 // User Schema
 const userSchema = new mongoose.Schema(
