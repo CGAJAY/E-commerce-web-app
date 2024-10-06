@@ -2,6 +2,7 @@ import express from "express";
 import {
 	registerUser,
 	loginUser,
+	deleteUser,
 } from "../controllers/user.controller.js";
 // import {
 // 	protectRoute,
@@ -13,6 +14,7 @@ const userRoutes = express.Router();
 // POST /api/users/register - Register a new user
 userRoutes.post("/register", registerUser);
 userRoutes.post("/login", loginUser);
+userRoutes.delete("/:id", deleteUser);
 
 // // POST /api/users/login - Authenticate user (Login)
 // userRoutes.post("/login", loginUser);
