@@ -1,5 +1,8 @@
 import express from "express";
-import { registerUser } from "../../controllers/user.controller.js";
+import {
+	registerUser,
+	loginUser,
+} from "../controllers/user.controller.js";
 // import {
 // 	protectRoute,
 // 	adminOnly,
@@ -9,6 +12,7 @@ const userRoutes = express.Router();
 
 // POST /api/users/register - Register a new user
 userRoutes.post("/register", registerUser);
+userRoutes.post("/login", loginUser);
 
 // // POST /api/users/login - Authenticate user (Login)
 // userRoutes.post("/login", loginUser);
