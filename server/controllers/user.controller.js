@@ -2,6 +2,7 @@
 import User from "../models/user.model.js";
 // JWT token generation function
 import { generateToken } from "../utils/generateToken.js";
+import bcrypt from "bcryptjs"; // To compare hashed passwords
 
 /**
  * @desc   Register a new user
@@ -53,7 +54,6 @@ export const registerUser = async (req, res) => {
 			lastName: savedUser.lastName, // Return the registered last name
 			email: savedUser.email, // Return the registered email
 			role: savedUser.role, // Return the user's role (either 'customer' or 'admin')
-			token: generateToken(savedUser._id), // Return a JWT token for authentication
 		});
 	} catch (error) {
 		// If an error occurs, return a 500 Internal Server Error response with the error message
@@ -70,7 +70,7 @@ export const registerUser = async (req, res) => {
  * @access Public (Anyone can log in)
  */
 
-// Controller to handle user login
+// Controller to log in user
 export const loginUser = async (req, res) => {
 	try {
 		// Get email and password from request body
@@ -79,26 +79,49 @@ export const loginUser = async (req, res) => {
 		// Find user by email
 		const user = await User.findOne({ email });
 
-		// Check if the user exists and the password matches
-		if (user && (await user.matchPassword(password))) {
-			// If valid, return user data and JWT token
-			res.json({
-				_id: user._id, // User's ID
-				username: user.username, // User's username
-				email: user.email, // User's email
-				role: user.role, // User's role
-				token: generateToken(user._id), // Return JWT token
-			});
-		} else {
-			// If invalid credentials, send a 401 (Unauthorized) error
-			res
+		// Check if the user exists
+		// if found, findOne() returns a document that contains all the fields defined in the User schema.
+		if (!user) {
+			return res
 				.status(401)
 				.json({ message: "Invalid email or password" });
 		}
+
+		// Compare the entered password with the hashed password in the database
+		// Returns boolean value
+		const isMatch = await bcrypt.compare(
+			password,
+			user.password
+		);
+
+		if (!isMatch) {
+			return res
+				.status(401)
+				.json({ message: "Invalid email or password" });
+		}
+
+		// Generate JWT token if the password matches
+		const token = generateToken(user._id);
+
+		// Set the JWT as a cookie in the response (httpOnly: true for security)
+		res.cookie("jwt", token, {
+			httpOnly: true, // Secure cookie, not accessible via JavaScript
+			secure: process.env.NODE_ENV === "production", // Only use HTTPS in production
+			maxAge: 7 * 24 * 60 * 60 * 1000, // Token valid for 1 week
+		});
+
+		// Send the user data and token back to the client
+		res.json({
+			_id: user._id,
+			username: user.username,
+			email: user.email,
+			role: user.role,
+			token, // Return JWT token for client-side storage (if needed)
+		});
 	} catch (error) {
-		// If an error occurs, return a 500 Internal Server Error response with the error message
-		console.error("Error logging in user:", error); // Log the error for debugging
-		res.status(500).json({ message: "Server error" }); // Return generic server error message
+		// Catch any server errors and return a 500 status with an error message
+		console.error("Error logging in user:", error);
+		res.status(500).json({ message: "Server error" });
 	}
 };
 
