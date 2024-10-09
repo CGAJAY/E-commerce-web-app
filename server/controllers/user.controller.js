@@ -77,10 +77,10 @@ export const loginUser = async (req, res) => {
 		const { email, password } = req.body;
 
 		// Find user by email
+		// if found, findOne() returns a document that contains all the fields defined in the User schema else null
 		const user = await User.findOne({ email });
 
 		// Check if the user exists
-		// if found, findOne() returns a document that contains all the fields defined in the User schema.
 		if (!user) {
 			return res
 				.status(401)
@@ -101,10 +101,10 @@ export const loginUser = async (req, res) => {
 		}
 
 		// Generate JWT token if the password matches
-		const token = generateToken(user._id);
+		const token = generateToken(user._id, user.role);
 
 		// Set the JWT as a cookie in the response (httpOnly: true for security)
-		res.cookie("jwt", token, {
+		res.cookie("token", token, {
 			httpOnly: true, // Secure cookie, not accessible via JavaScript
 			secure: process.env.NODE_ENV === "production", // Only use HTTPS in production
 			maxAge: 7 * 24 * 60 * 60 * 1000, // Token valid for 1 week
@@ -146,6 +146,36 @@ export const deleteUser = async (req, res) => {
 		// Log the error for debugging
 		console.error("Error deleting user:", error);
 		// Return generic server error message
+		res.status(500).json({ message: "Server error" });
+	}
+};
+
+// Controller to handle the profile page
+export const getProfile = async (req, res) => {
+	try {
+		// user's ID is attached to req.userId from the cookieAuth middleware
+		// select() Excludes the password field
+		const user = await User.findById(req.userId).select(
+			"-password"
+		);
+
+		// If user is not found, return a 404 Not Found response
+		if (!user) {
+			return res
+				.status(404)
+				.json({ message: "User not found" });
+		}
+
+		// Return the user's profile data
+		res.json({
+			_id: user._id,
+			username: user.username,
+			email: user.email,
+			role: user.role,
+		});
+	} catch (error) {
+		// Catch any server errors and return a 500 status with an error message
+		console.error("Error fetching profile:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
