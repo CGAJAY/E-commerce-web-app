@@ -3,34 +3,20 @@ import {
 	registerUser,
 	loginUser,
 	deleteUser,
+	getProfile,
 } from "../controllers/user.controller.js";
-// import {
-// 	protectRoute,
-// 	adminOnly,
-// } from "../middleware/authMiddleware.js"; // middleware for authentication
+// middleware for authentication
+import { cookieAuth } from "../middleware/cookieAuth.js";
 
 const userRoutes = express.Router();
 
-// POST /api/users/register - Register a new user
+// POST /register - Register a new user
 userRoutes.post("/register", registerUser);
+// POST /login - Login a user
 userRoutes.post("/login", loginUser);
+// DELETE /user/:id - Delete a user
 userRoutes.delete("/:id", deleteUser);
-
-// // POST /api/users/login - Authenticate user (Login)
-// userRoutes.post("/login", loginUser);
-
-// // GET /api/users/profile - Get logged-in user's profile
-// userRoutes.get("/profile", protectRoute, getUserProfile);
-
-// // PUT /api/users/profile - Update logged-in user's profile
-// userRoutes.put("/profile", protectRoute, updateUserProfile);
-
-// // DELETE /api/users/:id - Delete a user by admin (or by user themselves)
-// userRoutes.delete(
-// 	"/:id",
-// 	protectRoute,
-// 	adminOnly,
-// 	deleteUser
-// );
+// GET /user/profile - Go to user's profile
+userRoutes.get("/user/Profile", cookieAuth, getProfile);
 
 export default userRoutes;
