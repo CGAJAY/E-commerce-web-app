@@ -4,16 +4,23 @@ import { configDotenv } from "dotenv";
 configDotenv(); // Load environment variables
 
 // Function to generate a JWT token
-const generateToken = (userId, userRole) => {
-	// Sign the token with the user's ID and return it
+const generateToken = (user) => {
+	// Destructure the 'password' property from the 'user' object and assign it to '_'
+	// The underscore (_) is a convention used to indicate that we don't need the 'password' value.
+	// The rest of the properties (everything except 'password') are gathered in the 'userInfo' object.
+	const { password: _, ...userInfo } = user;
+
+	//function is used to create (or sign) a new JWT.
 	return jwt.sign(
 		{
-			id: userId, //Payload: user's unique ID
-			role: userRole, // for role-based access control }, //
+			// Payload: The data to encode in the token (user's info)
+			user: userInfo,
 		},
-		process.env.JWT_SECRET, // Secret key (stored in your environment variable)
+		// Secret key: This is used to sign the token, making sure it's secure
+		process.env.JWT_SECRET,
 		{
-			expiresIn: "30d", // Token expiration (e.g., 30 days)
+			// Options: The token will expire after 30 days
+			expiresIn: "30d",
 		}
 	);
 };
