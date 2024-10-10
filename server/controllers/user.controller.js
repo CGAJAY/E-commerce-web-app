@@ -2,7 +2,7 @@
 import User from "../models/user.model.js";
 // JWT token generation function
 import { generateToken } from "../utils/generateToken.js";
-import bcrypt from "bcryptjs"; // To compare hashed passwords
+import bcrypt from "bcrypt"; // To compare hashed passwords
 
 /**
  * @desc   Register a new user
@@ -76,24 +76,27 @@ export const loginUser = async (req, res) => {
 		// Get email and password from request body
 		const { email, password } = req.body;
 
-		// Find user by email
-		// if found, findOne() returns a document that contains all the fields defined in the User schema else null
+		// Look for a user in the database by their email address
+		// User.findOne() checks if there is a user with the given email
+		// If found, it returns the user document, otherwise it returns null
 		const user = await User.findOne({ email });
 
-		// Check if the user exists
+		// If no user with that email exists, return a 401 (Unauthorized) status
+		// This means the email is not registered or doesn't match
 		if (!user) {
 			return res
 				.status(401)
 				.json({ message: "Invalid email or password" });
 		}
 
-		// Compare the entered password with the hashed password in the database
-		// Returns boolean value
+		// Compare the provided password with the hashed password stored in the database
+		// bcrypt.compare() returns true if the password matches, false otherwise
 		const isMatch = await bcrypt.compare(
 			password,
-			user.password
+			user.password // user.password is the hashed password stored in the database
 		);
 
+		// If the password does not match, return a 401 status with an error message
 		if (!isMatch) {
 			return res
 				.status(401)
@@ -101,22 +104,27 @@ export const loginUser = async (req, res) => {
 		}
 
 		// Generate JWT token if the password matches
-		const token = generateToken(user._id, user.role);
+		const token = generateToken(user);
 
-		// Set the JWT as a cookie in the response (httpOnly: true for security)
+		// Set the generated token as a cookie in the user's browser
+		// Cookies are used for session management and storing user authentication info
+		// httpOnly: true - The cookie is only accessible through HTTP (not JavaScript), which adds security
+		// secure: true - The cookie is only sent over HTTPS in production (secure environments)
+		// maxAge - The cookie will expire in 7 days (expressed in milliseconds)
 		res.cookie("token", token, {
-			httpOnly: true, // Secure cookie, not accessible via JavaScript
-			secure: process.env.NODE_ENV === "production", // Only use HTTPS in production
-			maxAge: 7 * 24 * 60 * 60 * 1000, // Token valid for 1 week
+			httpOnly: true, // For security reasons, JavaScript can't access this cookie
+			secure: process.env.NODE_ENV === "production", // Only send cookie over HTTPS in production environments
+			maxAge: 7 * 24 * 60 * 60 * 1000, // The cookie will expire in 1 week
 		});
 
-		// Send the user data and token back to the client
+		// Send the user details to the client as a response
 		res.json({
-			_id: user._id,
-			username: user.username,
-			email: user.email,
-			role: user.role,
-			token, // Return JWT token for client-side storage (if needed)
+			_id: user._id, // User's unique ID
+			username: user.username, // User's username
+			email: user.email, // User's email address
+			role: user.role, // User's role (admin, customer, etc.)
+			firstName: user.firstName,
+			lastName: user.lastName,
 		});
 	} catch (error) {
 		// Catch any server errors and return a 500 status with an error message
@@ -153,18 +161,9 @@ export const deleteUser = async (req, res) => {
 // Controller to handle the profile page
 export const getProfile = async (req, res) => {
 	try {
-		// user's ID is attached to req.userId from the cookieAuth middleware
+		// user's document is attached to req.user from the cookieAuth middleware
 		// select() Excludes the password field
-		const user = await User.findById(req.userId).select(
-			"-password"
-		);
-
-		// If user is not found, return a 404 Not Found response
-		if (!user) {
-			return res
-				.status(404)
-				.json({ message: "User not found" });
-		}
+		const user = req.user;
 
 		// Return the user's profile data
 		res.json({
