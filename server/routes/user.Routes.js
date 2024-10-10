@@ -6,7 +6,7 @@ import {
 	getProfile,
 } from "../controllers/user.controller.js";
 // middleware for authentication
-import { cookieAuth } from "../middleware/cookieAuth.js";
+import cookieAuth from "../middlewares/cookieAuth.js";
 
 const userRoutes = express.Router();
 
