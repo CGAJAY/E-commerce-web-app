@@ -44,3 +44,33 @@ export const addProduct = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+// Function to delete a product
+export const deleteProduct = async (req, res) => {
+	try {
+		// Find the product by its ID from the request parameters
+		const { id } = req.params;
+
+		// Attempt to delete the product from the database
+		// If the product is found, it will be deleted from database & returns the document of the deleted product else null
+		const deletedProduct = await Product.findByIdAndDelete(
+			id
+		);
+
+		// If no product was found, respond with a 404 (Not Found) status
+		if (!deletedProduct) {
+			return res
+				.status(404)
+				.json({ message: "Product not found" });
+		}
+
+		// Respond with a success message upon successful deletion
+		res
+			.status(200)
+			.json({ message: "Product deleted successfully" });
+	} catch (error) {
+		// Catch any errors and respond with a 500 (Server Error) status
+		console.error("Error deleting product:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+};
