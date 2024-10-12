@@ -120,7 +120,7 @@ export const updateProduct = async (req, res) => {
 export const getAllProducts = async (req, res) => {
 	try {
 		// Fetch all products from the database and populate the category field
-		// Populates the category field with the related Category document
+		// Populate the category field with the related Category document
 		const products = await Product.find().populate(
 			"category"
 		);
@@ -130,10 +130,37 @@ export const getAllProducts = async (req, res) => {
 	} catch (error) {
 		// Catch any errors and respond with a 500 (Server Error) status
 		console.error("Error fetching products:", error);
-		res
-			.status(500)
-			.json({
-				message: "Server error while fetching products.",
-			});
+		res.status(500).json({
+			message: "Server error while fetching products.",
+		});
+	}
+};
+
+// Function to get a product by ID
+export const getProductById = async (req, res) => {
+	try {
+		const { id } = req.params; // Extract the product ID from URL parameters
+
+		// Find the product by its ID and populate the category field
+		// Populate the category field with the related Category document
+		const product = await Product.findById(id).populate(
+			"category"
+		);
+
+		// If no product is found, respond with a 404 (Not Found) status
+		if (!product) {
+			return res
+				.status(404)
+				.json({ message: "Product not found." });
+		}
+
+		// Respond with the found product data
+		res.status(200).json(product);
+	} catch (error) {
+		// Catch any errors and respond with a 500 (Server Error) status
+		console.error("Error fetching product:", error);
+		res.status(500).json({
+			message: "Server error while fetching product.",
+		});
 	}
 };
