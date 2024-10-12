@@ -115,3 +115,25 @@ export const updateProduct = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+// Function to get all products
+export const getAllProducts = async (req, res) => {
+	try {
+		// Fetch all products from the database and populate the category field
+		// Populates the category field with the related Category document
+		const products = await Product.find().populate(
+			"category"
+		);
+
+		// Respond with the list of products
+		res.status(200).json(products);
+	} catch (error) {
+		// Catch any errors and respond with a 500 (Server Error) status
+		console.error("Error fetching products:", error);
+		res
+			.status(500)
+			.json({
+				message: "Server error while fetching products.",
+			});
+	}
+};

@@ -17,22 +17,14 @@ productRoutes.use(cookieAuth);
 // use isAdmin middleware to all routes that require admin access
 
 // Add a new product (admin only)
-productRoutes.post("/products", isAdmin, addProduct);
+productRoutes.post("/add", isAdmin, addProduct);
 // Update an existing product by ID (admin only)
-productRoutes.patch(
-	"/products/:id",
-	isAdmin,
-	updateProduct
-);
+productRoutes.patch("/:id", isAdmin, updateProduct);
 // Delete a product by ID (admin only)
-productRoutes.delete(
-	"/products/:id",
-	isAdmin,
-	deleteProduct
-);
+productRoutes.delete("/:id", isAdmin, deleteProduct);
 // Get all products (available to all authenticated users)
-productRoutes.get("/products", getAllProducts);
+productRoutes.get("/", getAllProducts);
 // Get a product by ID (available to all authenticated users)
-productRoutes.get("/products/:id", getProductById);
+productRoutes.get("/:id", getProductById);
 
 export default productRoutes;
