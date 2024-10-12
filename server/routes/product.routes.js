@@ -7,6 +7,9 @@ import {
 	addProduct,
 	updateProduct,
 	deleteProduct,
+	getAllProducts,
+	getProductById,
+	getProductsByCategory,
 } from "../controllers/product.controller.js";
 
 const productRoutes = express.Router();
@@ -26,5 +29,6 @@ productRoutes.delete("/:id", isAdmin, deleteProduct);
 productRoutes.get("/", getAllProducts);
 // Get a product by ID (available to all authenticated users)
 productRoutes.get("/:id", getProductById);
-
+// Get all products by category (available to all authenticated users)
+productRoutes.get("/:categoryName", getProductsByCategory);
 export default productRoutes;

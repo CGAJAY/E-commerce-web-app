@@ -1,6 +1,9 @@
 // Import the Product model from the models directory
 import Product from "../models/product.model";
 
+// Import the Category model
+import Category from "../models/category.model";
+
 // Function to add a new product to the database
 export const addProduct = async (req, res) => {
 	try {
@@ -161,6 +164,51 @@ export const getProductById = async (req, res) => {
 		console.error("Error fetching product:", error);
 		res.status(500).json({
 			message: "Server error while fetching product.",
+		});
+	}
+};
+
+// Function to get all products in a specific category by category name
+export const getProductsByCategory = async (req, res) => {
+	try {
+		// Extract the category name from request body
+		const { categoryName } = req.body;
+
+		// Fetch the category by name to get its ID
+		const category = await Category.findOne({
+			name: categoryName,
+		});
+
+		// If no category is found, respond with a 404 (Not Found) status
+		if (!category) {
+			return res
+				.status(404)
+				.json({ message: "Category not found." });
+		}
+
+		// Fetch all products that belong to the specified category ID
+		const products = await Product.find({
+			category: category._id, // Match products with the found category's ID
+		}).populate("category"); // Populate the category field
+
+		// If no products are found, respond with a 404 (Not Found) status
+		if (products.length === 0) {
+			return res.status(404).json({
+				message: "No products found in this category.",
+			});
+		}
+
+		// Respond with the list of products in the specified category
+		res.status(200).json(products);
+	} catch (error) {
+		// Catch any errors and respond with a 500 (Server Error) status
+		console.error(
+			"Error fetching products by category:",
+			error
+		);
+		res.status(500).json({
+			message:
+				"Server error while fetching products by category.",
 		});
 	}
 };
