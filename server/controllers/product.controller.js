@@ -51,7 +51,6 @@ export const deleteProduct = async (req, res) => {
 		// Find the product by its ID from the request parameters
 		const { id } = req.params;
 
-		// Attempt to delete the product from the database
 		// If the product is found, it will be deleted from database & returns the document of the deleted product else null
 		const deletedProduct = await Product.findByIdAndDelete(
 			id
@@ -71,6 +70,48 @@ export const deleteProduct = async (req, res) => {
 	} catch (error) {
 		// Catch any errors and respond with a 500 (Server Error) status
 		console.error("Error deleting product:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+};
+
+// Function to update a product
+export const updateProduct = async (req, res) => {
+	try {
+		// Get the product ID and the updated data from the request
+		const { id } = req.params; // Product ID from URL parameters
+		const updatedData = req.body; // New data for the product
+
+		// Check if updatedData is empty by counting the number of keys
+		if (Object.keys(updatedData).length === 0) {
+			// If there are no keys in updatedData, send a response with a 400 status
+			// and a message indicating that no fields were provided for update
+			return res
+				.status(400)
+				.json({ message: "No fields provided for update" });
+		}
+
+		// Find the product by its ID and update it with new data
+		const updatedProduct = await Product.findByIdAndUpdate(
+			id,
+			updatedData,
+			{
+				new: true, // Return the updated product
+				runValidators: true, // Ensure validators are run on the updated data
+			}
+		);
+
+		// If no product was found, respond with a 404 (Not Found) status
+		if (!updatedProduct) {
+			return res
+				.status(404)
+				.json({ message: "Product not found" });
+		}
+
+		// Respond with the updated product data
+		res.status(200).json(updatedProduct);
+	} catch (error) {
+		// Catch any errors and respond with a 500 (Server Error) status
+		console.error("Error updating product:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
