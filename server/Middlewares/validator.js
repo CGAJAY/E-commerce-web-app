@@ -96,3 +96,37 @@ export const validateUserRegistration = async (
 			.json({ message: "An unexpected error occurred." });
 	}
 };
+
+export const validateLogin = async (req, res, next) => {
+	try {
+		// Destructure the username and password from the req body
+		const { username, password } = req.body;
+
+		// Check if username and password are provided
+		if (!username || !password) {
+			return res
+				.status(400)
+				.json({ message: "All fields are required" });
+		}
+
+		// Check if the username is an empty string
+		if (username.trim() === "") {
+			return res
+				.status(400)
+				.json({ message: "Username cannot be empty" });
+		}
+
+		// Check if the password is greater than 5 characters
+		if (password.length < 6) {
+			return res
+				.status(400)
+				.json({
+					message:
+						"Password must Must have More than 5 characters",
+				});
+		}
+
+		// Call the next middleware function if all validations pass
+		next();
+	} catch (error) {}
+};
