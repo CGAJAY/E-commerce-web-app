@@ -7,13 +7,21 @@ import {
 } from "../controllers/user.controller.js";
 // middleware for authentication
 import cookieAuth from "../middlewares/cookieAuth.js";
+import {
+	validateLogin,
+	validateUserRegistration,
+} from "../Middlewares/validator.js";
 
 const userRoutes = express.Router();
 
 // POST /register - Register a new user
-userRoutes.post("/register", registerUser);
+userRoutes.post(
+	"/register",
+	validateUserRegistration,
+	registerUser
+);
 // POST /login - Login a user
-userRoutes.post("/login", loginUser);
+userRoutes.post("/login", validateLogin, loginUser);
 // DELETE /user/:id - Delete a user
 userRoutes.delete("/:id", deleteUser);
 // GET /user/profile - Go to user's profile

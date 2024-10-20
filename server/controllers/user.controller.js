@@ -12,7 +12,7 @@ import bcrypt from "bcrypt"; // To compare hashed passwords
 
 // Controller function to handle user registration
 export const registerUser = async (req, res) => {
-	// Extract fields from the request body: firstName, lastName, email, password, role, and username
+	// Extract fields from the request body
 	const {
 		firstName,
 		lastName,
@@ -46,7 +46,7 @@ export const registerUser = async (req, res) => {
 		// Save the new user to the database
 		const savedUser = await newUser.save();
 
-		// Return success response with user details and JWT
+		// Return success response with user details
 		res.status(201).json({
 			_id: savedUser._id, // Return the user's unique ID
 			username: savedUser.username, // Return the registered username
