@@ -9,6 +9,10 @@ import {
 const Header = () => {
 	const [isSearchOpen, setIsSearchOpen] = useState(true);
 
+	const toggleSearch = () => {
+		setIsSearchOpen(!isSearchOpen);
+	};
+
 	const categories = [
 		"phones",
 		"Laptops",
@@ -46,7 +50,10 @@ const Header = () => {
 
 					{/* Account and Cart for all layouts */}
 					<div className="flex items-center space-x-4">
-						<button className="hover:text-yellow-500">
+						<button
+							onClick={toggleSearch}
+							className="hover:text-yellow-500"
+						>
 							<FaSearch className="h-5 w-5" />
 						</button>
 						<a href="#" className="hover:text-yellow-500">
