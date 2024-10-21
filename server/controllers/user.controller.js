@@ -144,11 +144,13 @@ export const deleteUser = async (req, res) => {
 
 		// Check if the user was found and deleted
 		if (user) {
-			res
+			return res
 				.status(200)
 				.json({ message: "User deleted successfully" }); // Successful deletion message
 		} else {
-			res.status(404).json({ message: "User not found" }); // User not found
+			return res
+				.status(404)
+				.json({ message: "User not found" }); // User not found
 		}
 	} catch (error) {
 		// Log the error for debugging
