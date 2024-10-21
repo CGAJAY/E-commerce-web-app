@@ -10,7 +10,7 @@ import cookieAuth from "../middlewares/cookieAuth.js";
 import {
 	validateLogin,
 	validateUserRegistration,
-} from "../Middlewares/validator.js";
+} from "../Middlewares/userValidator.js";
 
 const userRoutes = express.Router();
 
