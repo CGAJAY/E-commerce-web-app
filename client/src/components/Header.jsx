@@ -4,10 +4,16 @@ import {
 	FaSearch,
 	FaShoppingBag,
 	FaUser,
+	FaTimes,
 } from "react-icons/fa";
 
 const Header = () => {
 	const [isSearchOpen, setIsSearchOpen] = useState(true);
+	const [isMenuOpen, setIsMenuOpen] = useState(true);
+
+	const closeMenu = () => {
+		setIsMenuOpen(!isMenuOpen);
+	};
 
 	const toggleSearch = () => {
 		setIsSearchOpen(!isSearchOpen);
@@ -91,6 +97,46 @@ const Header = () => {
 					</div>
 				</div>
 			)}
+
+			{/* Menu for Categories in mobile and tablet view */}
+			<div
+				className={`fixed inset-x-0 top-0 z-50 bg-gray-800 transform ${
+					isMenuOpen ? "translate-y-0" : "-translate-y-full"
+				} transition-transform duration-300 ease-in-out lg:hidden`}
+			>
+				<div className="container mx-auto px-4 py-4">
+					<div className="flex justify-between items-center mb-4">
+						<span className="font-semibold text-xl">
+							Categories
+						</span>
+						<button
+							onClick={closeMenu}
+							className="text-gray-300 hover:text-white"
+						>
+							<FaTimes className="h-6 w-6" />
+						</button>
+					</div>
+					<nav className="flex flex-col space-y-2">
+						{categories.map((category) => (
+							<a
+								key={category}
+								href="#"
+								className="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded"
+								onClick={closeMenu}
+							>
+								{category}
+							</a>
+						))}
+						<a
+							href="#"
+							className="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded"
+							onClick={closeMenu}
+						>
+							Login / Sign Up
+						</a>
+					</nav>
+				</div>
+			</div>
 		</header>
 	);
 };
