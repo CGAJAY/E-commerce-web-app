@@ -7,6 +7,12 @@ import {
 } from "react-icons/fa";
 
 const Header = () => {
+	const categories = [
+		"phones",
+		"Laptops",
+		"Headphones",
+		"Smartwatches",
+	];
 	return (
 		<header className="bg-white text-black">
 			<div className="container mx-auto px-4 py-4">
@@ -22,6 +28,19 @@ const Header = () => {
 							E-shop
 						</span>
 					</div>
+
+					{/* Categories for Desktop layout */}
+					<nav className="hidden lg:flex space-x-4 absolute left-1/2 transform -translate-x-1/2">
+						{categories.map((category) => (
+							<a
+								key={category}
+								href="#"
+								className="text-2xl hover:text-yellow-500"
+							>
+								{category}
+							</a>
+						))}
+					</nav>
 
 					{/* Account and Cart */}
 					<div className="flex items-center space-x-4">
