@@ -12,6 +12,10 @@ const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
 
 	const closeMenu = () => {
+		setIsMenuOpen(false);
+	};
+
+	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
 
@@ -30,7 +34,10 @@ const Header = () => {
 			<div className="container mx-auto px-4 py-4">
 				<div className="flex items-center justify-between">
 					{/* Hamburger menu for tablet and mobile layouts */}
-					<button className="lg:hidden">
+					<button
+						onClick={toggleMenu}
+						className="lg:hidden"
+					>
 						<FaBars className="h-6 w-6" />
 					</button>
 
@@ -137,6 +144,14 @@ const Header = () => {
 					</nav>
 				</div>
 			</div>
+
+			{/* Open the menu in mobile and tablet when isMenuOpen is true */}
+			{isMenuOpen && (
+				<div
+					className="fixed inset-0 bg-black bg-opacity-50 lg:hidden"
+					onClick={closeMenu}
+				></div>
+			)}
 		</header>
 	);
 };
