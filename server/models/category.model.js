@@ -7,10 +7,11 @@ const categorySchema = new Schema(
 		name: {
 			type: String,
 			required: true,
-			unique: true, // Ensure category names are unique
 		},
-		description: {
+		slug: {
 			type: String,
+			required: true,
+			unique: true, // Ensure category names are unique
 		},
 	},
 	{
