@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 
 // Order Schema
 const orderSchema = new mongoose.Schema({
-	userId: {
+	user: {
 		type: Schema.Types.ObjectId,
 		ref: "User", // Refers to User collection
 		required: true,
 	},
 	products: [
 		{
-			productId: {
+			product: {
 				type: Schema.Types.ObjectId,
 				ref: "Product", // Refers to Product collection
 				required: true,
@@ -31,7 +31,15 @@ const orderSchema = new mongoose.Schema({
 	},
 	status: {
 		type: String,
-		default: "Pending", // Order status (e.g., Pending, Shipped, Delivered)
+		enum: [
+			"Cart", // For a cart saved but not ordered yet
+			"Pending", // When user starts the checkout process
+			"Paid", // When user makes payment
+			"Shipping", // When the product is being delivered
+			"Delivered", // When product has reached the customer
+			"Cancelled", // If the order is cancelled at any stage
+		],
+		default: "Cart",
 	},
 });
 

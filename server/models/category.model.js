@@ -11,7 +11,7 @@ const categorySchema = new Schema(
 		slug: {
 			type: String,
 			required: true,
-			unique: true, // Ensure category names are unique
+			unique: true, // Ensure category slug are unique
 		},
 	},
 	{
