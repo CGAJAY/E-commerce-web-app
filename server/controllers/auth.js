@@ -2,6 +2,8 @@ import User from "../db/models/User.js";
 // bcrypt for password hashing
 import bcrypt from "bcryptjs";
 
+import { generateJwtToken } from "../utils/generate-jwt-token.js";
+
 // Controller function to handle user registration
 export const registerUser = async (req, res) => {
 	// Extract fields from the request body
@@ -60,3 +62,82 @@ export const registerUser = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+// Define the loginUser function to handle login requests
+export const loginUser = async (req, res) => {
+	try {
+		// Destructure the email and password from the request body
+		const { username, password } = req.body;
+
+		// Check if a user with this username exists in the database
+		const user = await User.findOne({ username });
+
+		// If no user is found, return a 400 status with an error message
+		if (!user) {
+			res.status(400).json({
+				message: "Incorrect Credentials.",
+			});
+			return; // Exit if the user is not found
+		}
+
+		// Compare the provided password with the stored hashed password
+		const isPasswordMatch = await bcrypt.compare(
+			password,
+			user.password
+		);
+
+		// If the password is incorrect, return a 400 status with an error message
+		if (!isPasswordMatch) {
+			res.status(400).json({
+				message: "Incorrect credentials - password.",
+			});
+			return; // Exit if the password is incorrect
+		}
+
+		// Cookie in res object to store the cookie in the browser without encrypting it with a token
+		// res.cookie(
+		// 	process.env.AUTH_COOKIE_NAME, // Name of the cookie
+		// 	// Value of cookie, which is the user object converted to JSON
+		// 	JSON.stringify(user.toObject())
+		// );
+
+		// if login is okay create a token and include user id in the token payload
+		// pass the res object to create a cookie containing the jwt
+		generateJwtToken(res, { _id: user._id });
+
+		// if login is okay send a message to say login is successful,
+		res.json({
+			message: "Login successful",
+		});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: "Server error" });
+	}
+};
+
+// Controller to handle user deletion
+// export const deleteUser = async (req, res) => {
+// 	try {
+// 		// Get the user ID from the request parameters
+// 		const { id } = req.params;
+
+// 		// Find the user by ID and delete them
+// 		const user = await User.findByIdAndDelete(id);
+
+// 		// Check if the user was found and deleted
+// 		if (user) {
+// 			return res
+// 				.status(200)
+// 				.json({ message: "User deleted successfully" }); // Successful deletion message
+// 		} else {
+// 			return res
+// 				.status(404)
+// 				.json({ message: "User not found" }); // User not found
+// 		}
+// 	} catch (error) {
+// 		// Log the error for debugging
+// 		console.error("Error deleting user:", error);
+// 		// Return generic server error message
+// 		res.status(500).json({ message: "Server error" });
+// 	}
+// };
