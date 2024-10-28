@@ -94,21 +94,22 @@ export const loginUser = async (req, res) => {
 			return; // Exit if the password is incorrect
 		}
 
-		// Cookie in res object to store the cookie in the browser without encrypting it with a token
-		// res.cookie(
-		// 	process.env.AUTH_COOKIE_NAME, // Name of the cookie
-		// 	// Value of cookie, which is the user object converted to JSON
-		// 	JSON.stringify(user.toObject())
-		// );
+		// Destructure out unwanted fields and create a new user object
+		const {
+			password: _,
+			cart,
+			createdAt,
+			updatedAt,
+			__v,
+			...userWithoutSensitiveFields
+		} = user.toObject();
 
-		// if login is okay create a token and include user id in the token payload
 		// pass the res object to create a cookie containing the jwt
-		generateJwtToken(res, { _id: user._id });
+		// Generate JWT token with filtered user details (no sensitive info)
+		generateJwtToken(res, userWithoutSensitiveFields);
 
-		// if login is okay send a message to say login is successful,
-		res.status(201).json({
-			message: "Login successful",
-		});
+		// Respond with the filtered user details and a success message
+		res.status(201).json(userWithoutSensitiveFields);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: "Server error" });

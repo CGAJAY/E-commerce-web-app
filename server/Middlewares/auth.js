@@ -21,8 +21,8 @@ export const requiresAuthentication = (req, res, next) => {
 			process.env.JWT_SECRET
 		);
 
-		// if token is valid extract the user's _id from the token payload
-		req.userId = payload.user._id;
+		// If token is valid, assign user data from payload to req.user
+		req.user = payload;
 
 		// move to next middleware
 		next();
@@ -30,5 +30,21 @@ export const requiresAuthentication = (req, res, next) => {
 		return res
 			.status(401)
 			.json({ message: "You are not authenticated" });
+	}
+};
+
+// Middleware to check if the user is an admin
+export const isAdmin = (req, res, next) => {
+	// req.user is populated by the cookieAuth middleware
+	// Check if req.user exists and if the user's role is 'admin'
+	if (req.user && req.user.role === "admin") {
+		// If the user is an admin, proceed to the next middleware or route handler
+		next();
+	} else {
+		// If the user is not an admin, respond with a 403 Forbidden status
+		// This means the user is not allowed to access this route
+		res
+			.status(403)
+			.json({ message: "Access denied. Admins only." });
 	}
 };
