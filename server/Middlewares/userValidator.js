@@ -97,6 +97,7 @@ export const validateUserRegistration = async (
 	}
 };
 
+// Middleware function to validate user login input
 export const validateLogin = async (req, res, next) => {
 	try {
 		// Destructure the username and password from the req body
@@ -118,12 +119,10 @@ export const validateLogin = async (req, res, next) => {
 
 		// Check if the password is greater than 5 characters
 		if (password.length < 6) {
-			return res
-				.status(400)
-				.json({
-					message:
-						"Password must Must have More than 5 characters",
-				});
+			return res.status(400).json({
+				message:
+					"Password must Must have More than 5 characters",
+			});
 		}
 
 		// Call the next middleware function if all validations pass
