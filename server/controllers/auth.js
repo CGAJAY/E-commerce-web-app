@@ -63,7 +63,7 @@ export const registerUser = async (req, res) => {
 	}
 };
 
-// Define the loginUser function to handle login requests
+//Controller function to handle login requests
 export const loginUser = async (req, res) => {
 	try {
 		// Destructure the email and password from the request body
@@ -106,7 +106,7 @@ export const loginUser = async (req, res) => {
 		generateJwtToken(res, { _id: user._id });
 
 		// if login is okay send a message to say login is successful,
-		res.json({
+		res.status(201).json({
 			message: "Login successful",
 		});
 	} catch (error) {
@@ -115,29 +115,37 @@ export const loginUser = async (req, res) => {
 	}
 };
 
-// Controller to handle user deletion
-// export const deleteUser = async (req, res) => {
-// 	try {
-// 		// Get the user ID from the request parameters
-// 		const { id } = req.params;
+//Controller function to handle logou requests
+export const logoutUser = async (req, res) => {
+	// Clear the cookie when the user logs out
+	res
+		.clearCookie(process.env.AUTH_COOKIE_NAME)
+		.json({ message: "Logout Successful" });
+};
 
-// 		// Find the user by ID and delete them
-// 		const user = await User.findByIdAndDelete(id);
+//Controller function to handle deleteUser requests for admin only
+export const deleteUser = async (req, res) => {
+	try {
+		// Extract user ID from the request parameters
+		const { id } = req.params;
 
-// 		// Check if the user was found and deleted
-// 		if (user) {
-// 			return res
-// 				.status(200)
-// 				.json({ message: "User deleted successfully" }); // Successful deletion message
-// 		} else {
-// 			return res
-// 				.status(404)
-// 				.json({ message: "User not found" }); // User not found
-// 		}
-// 	} catch (error) {
-// 		// Log the error for debugging
-// 		console.error("Error deleting user:", error);
-// 		// Return generic server error message
-// 		res.status(500).json({ message: "Server error" });
-// 	}
-// };
+		// Find the user by ID and delete them from the database
+		const deletedUser = await User.findByIdAndDelete(id);
+
+		// If no user was found, return a 404 status with an error message
+		if (!deletedUser) {
+			return res.status(404).json({
+				message: "User not found",
+			});
+		}
+
+		// If deletion was successful, send a success message
+		res.status(200).json({
+			message: "User deleted successfully",
+		});
+	} catch (error) {
+		console.error(error);
+		// Send a 500 status if there's a server error
+		res.status(500).json({ message: "Server error" });
+	}
+};
