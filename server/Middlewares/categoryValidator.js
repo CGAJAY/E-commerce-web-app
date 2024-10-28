@@ -4,11 +4,11 @@ export const validateNewCategory = async (
 	res,
 	next
 ) => {
-	// Get the product details from the request body
-	const { name, slug } = req.body;
+	// Get the product name from the request body
+	const { name } = req.body;
 	try {
 		// Check if all fields are provided
-		if (!name || !slug) {
+		if (!name) {
 			return res
 				.status(400)
 				.json({ message: "All fields are required" });
@@ -18,13 +18,6 @@ export const validateNewCategory = async (
 			return res
 				.status(400)
 				.json({ message: "Name can't be empty" });
-		}
-
-		// Check if slug is an empty string
-		if (slug.trim() === "") {
-			return res
-				.status(400)
-				.json({ message: "Slug can't be empty" });
 		}
 
 		// Call the next middleware function if all validations pass
