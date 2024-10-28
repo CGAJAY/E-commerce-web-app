@@ -1,29 +1,24 @@
+// Import the 'connect' function from the Mongoose library
+// 'connect' allows us to connect to a MongoDB database
 import { connect } from "mongoose";
-import dotenv from "dotenv";
 
-dotenv.config(); // Load environment variables
-
-// Define the MongoDB URI from the environment variables
-const dbURI = process.env.MONGO_URI;
-console.log("MongoDB URI:", dbURI);
-
-// Function to establish a connection to the database
-const connectDB = async () => {
+// This asynchronous function will handle the connection to the MongoDB database
+const connectDb = async () => {
 	try {
-		// asynchronously connect to MongoDB using Mongoose
-		await connect(dbURI);
-		// log success message when connected
-		console.log("MongoDB connected successfully");
+		// Attempt to connect to the database using the URI from the environment variables (process.env.MONGO_URI)
+		// Using await ensures that the code waits for the promise to resolve before moving on, giving you the chance to handle success or failure.
+		await connect(process.env.MONGO_URI);
+
+		// If the connection is successful, log a success message to the console
+		console.log("Database connected successfully");
 	} catch (error) {
-		// log error if connection fails
-		console.error(
-			"Error connecting to MongoDB:",
-			error.message
-		);
+		// If there's an error during the connection, catch it and log the error message to the console
+		console.log("Database connection error", error);
+
 		// Exit the process with a failure code (1) to stop the application in case of failure
 		process.exit(1);
 	}
 };
 
-// Export the connectDB and Models
-export { connectDB };
+// Export the connectDB
+export default connectDb;
