@@ -37,7 +37,9 @@ export const requiresAuthentication = (req, res, next) => {
 export const isAdmin = (req, res, next) => {
 	// req.user is populated by the cookieAuth middleware
 	// Check if req.user exists and if the user's role is 'admin'
-	if (req.user && req.user.role === "admin") {
+	console.log(req.user.user);
+
+	if (req.user.user && req.user.user.role === "admin") {
 		// If the user is an admin, proceed to the next middleware or route handler
 		next();
 	} else {
