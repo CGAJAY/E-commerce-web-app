@@ -22,7 +22,7 @@ export const requiresAuthentication = (req, res, next) => {
 		);
 
 		// If token is valid, assign user data from payload to req.user
-		req.user = payload;
+		req.user = payload.user;
 
 		// move to next middleware
 		next();
@@ -37,16 +37,14 @@ export const requiresAuthentication = (req, res, next) => {
 export const isAdmin = (req, res, next) => {
 	// req.user is populated by the cookieAuth middleware
 	// Check if req.user exists and if the user's role is 'admin'
-	console.log(req.user.user);
 
-	if (req.user.user && req.user.user.role === "admin") {
-		// If the user is an admin, proceed to the next middleware or route handler
-		next();
-	} else {
+	if (!req.user && !req.user.role === "admin") {
 		// If the user is not an admin, respond with a 403 Forbidden status
 		// This means the user is not allowed to access this route
-		res
+		return res
 			.status(403)
 			.json({ message: "Access denied. Admins only." });
 	}
+	// If the user is an admin, proceed to the next middleware or route handler
+	next();
 };

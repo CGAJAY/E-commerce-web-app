@@ -1,4 +1,4 @@
-import Category from "../db/models/category.model.js";
+import Category from "../db/models/category.js";
 import slugify from "slugify";
 
 // Function to add a new category to the database
@@ -14,10 +14,7 @@ export const addCategory = async (req, res) => {
 		});
 
 		// Create a new category
-		const category = new Category({ name, slug });
-
-		// Save the new category in the database
-		await category.save();
+		const category = await Category.create({ name, slug });
 
 		// Return success response
 		return res.status(201).json({
