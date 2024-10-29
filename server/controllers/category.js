@@ -13,6 +13,14 @@ export const addCategory = async (req, res) => {
 			strict: true,
 		});
 
+		const isSlug = await Category.findOne({ slug: slug });
+
+		if (isSlug) {
+			return res
+				.status(400)
+				.json({ message: "slug already exists." });
+		}
+
 		// Create a new category
 		const category = await Category.create({ name, slug });
 
