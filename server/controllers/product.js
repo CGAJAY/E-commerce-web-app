@@ -66,3 +66,34 @@ export const getAllProducts = async (req, res) => {
 		});
 	}
 };
+
+// Get products by category slug
+export const getProductsByCategory = async (req, res) => {
+	try {
+		const { slug } = req.params; // Category slug from URL parameters
+
+		// Find the category by slug
+		const category = await Category.findOne({ slug });
+		if (!category) {
+			return res
+				.status(404)
+				.json({ message: "Category not found." });
+		}
+
+		// Find products in the given category
+		const products = await Product.find({
+			category: category._id,
+		}).populate("category");
+
+		res.status(200).json(products);
+	} catch (error) {
+		console.error(
+			"Error fetching products by category:",
+			error
+		);
+		res.status(500).json({
+			message:
+				"Server error while fetching products by category.",
+		});
+	}
+};

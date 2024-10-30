@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
 	createProduct,
 	getAllProducts,
+	getProductsByCategory,
 } from "../../controllers/product.js";
 import { validateNewProduct } from "../../Middlewares/productValidator.js";
 import {
@@ -22,5 +23,8 @@ productRouter.post(
 	validateNewProduct,
 	createProduct
 );
+
+// /api/v1/products/:category
+productRouter.get("/:category", getAllProducts);
 
 export { productRouter };
