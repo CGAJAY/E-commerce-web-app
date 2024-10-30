@@ -74,6 +74,8 @@ export const getProductsByCategory = async (req, res) => {
 
 		// Find the category by slug
 		const category = await Category.findOne({ slug });
+		console.log(category);
+
 		if (!category) {
 			return res
 				.status(404)
@@ -94,6 +96,84 @@ export const getProductsByCategory = async (req, res) => {
 		res.status(500).json({
 			message:
 				"Server error while fetching products by category.",
+		});
+	}
+};
+
+// Get a product by ID
+export const getProductById = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const product = await Product.findById(id).populate(
+			"category"
+		);
+
+		if (!product) {
+			return res
+				.status(404)
+				.json({ message: "Product not found." });
+		}
+
+		res.status(200).json(product);
+	} catch (error) {
+		console.error("Error fetching product:", error);
+		res.status(500).json({
+			message: "Server error while fetching product.",
+		});
+	}
+};
+
+// Update a product by ID
+export const updateProduct = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const updatedData = req.body;
+
+		const updatedProduct = await Product.findByIdAndUpdate(
+			id,
+			updatedData,
+			{
+				new: true, // Return the updated product
+				runValidators: true, // Ensure validation on update
+			}
+		).populate("category");
+
+		if (!updatedProduct) {
+			return res
+				.status(404)
+				.json({ message: "Product not found." });
+		}
+
+		res.status(200).json(updatedProduct);
+	} catch (error) {
+		console.error("Error updating product:", error);
+		res.status(500).json({
+			message: "Server error while updating product.",
+		});
+	}
+};
+
+// Delete a product by ID
+export const deleteProduct = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const deletedProduct = await Product.findByIdAndDelete(
+			id
+		);
+
+		if (!deletedProduct) {
+			return res
+				.status(404)
+				.json({ message: "Product not found." });
+		}
+
+		res
+			.status(200)
+			.json({ message: "Product deleted successfully." });
+	} catch (error) {
+		console.error("Error deleting product:", error);
+		res.status(500).json({
+			message: "Server error while deleting product.",
 		});
 	}
 };
