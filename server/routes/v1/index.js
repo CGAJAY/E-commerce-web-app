@@ -21,6 +21,6 @@ v1Router.get("/", (req, res) => {
 // api/v1/auth
 v1Router.use("/auth", authRouter);
 v1Router.use("/category", categoryRouter);
-v1Router.use("/product", productRouter);
+v1Router.use("/products", productRouter);
 
 export { v1Router };

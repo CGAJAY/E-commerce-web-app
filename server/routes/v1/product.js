@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { createProduct } from "../../controllers/product.js";
+import {
+	createProduct,
+	getAllProducts,
+} from "../../controllers/product.js";
 import { validateNewProduct } from "../../Middlewares/productValidator.js";
 import {
 	isAdmin,
@@ -8,10 +11,10 @@ import {
 
 const productRouter = Router();
 
-// /api/v1/product/
-// productRouter.get("/");
+// /api/v1/products/
+productRouter.get("/", getAllProducts);
 
-// /api/v1/product/add
+// /api/v1/products/add
 productRouter.post(
 	"/add",
 	requiresAuthentication,
