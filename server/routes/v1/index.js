@@ -5,6 +5,7 @@ import { requiresAuthentication } from "../../Middlewares/auth.js";
 // router imports
 import { authRouter } from "./auth.js";
 import { categoryRouter } from "./category.js";
+import { productRouter } from "./product.js";
 
 const v1Router = Router();
 
@@ -20,5 +21,6 @@ v1Router.get("/", (req, res) => {
 // api/v1/auth
 v1Router.use("/auth", authRouter);
 v1Router.use("/category", categoryRouter);
+v1Router.use("/product", productRouter);
 
 export { v1Router };

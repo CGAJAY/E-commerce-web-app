@@ -8,7 +8,7 @@ import {
 
 const categoryRouter = Router();
 
-// /api/v1/auth/register/category/add
+// /api/v1/category/
 categoryRouter.get(
 	"/",
 	requiresAuthentication,
@@ -18,6 +18,8 @@ categoryRouter.get(
 			.json({ message: "Category will be added" });
 	}
 );
+
+// /api/v1/category/add
 categoryRouter.post(
 	"/add",
 	requiresAuthentication,
