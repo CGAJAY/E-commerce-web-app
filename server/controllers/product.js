@@ -21,6 +21,14 @@ export const createProduct = async (req, res) => {
 				.json({ message: "Category not found" });
 		}
 
+		// Check if a product with the same name already exists
+		const existingProduct = await Product.findOne({ name });
+		if (existingProduct) {
+			return res
+				.status(400)
+				.json({ message: "Product already exists" });
+		}
+
 		// Create the new product using the found category's _id
 		const newProduct = await Product.create({
 			name,
@@ -35,6 +43,26 @@ export const createProduct = async (req, res) => {
 		console.error("Error creating product:", error);
 		res.status(500).json({
 			message: "Server error while creating product",
+		});
+	}
+};
+
+// Function to get all products
+export const getAllProducts = async (req, res) => {
+	try {
+		// Fetch all products from the database and populate the category field
+		// Populate the category field with the related Category document
+		const products = await Product.find().populate(
+			"category"
+		);
+
+		// Respond with the list of products
+		res.status(200).json(products);
+	} catch (error) {
+		// Catch any errors and respond with a 500 (Server Error) status
+		console.error("Error fetching products:", error);
+		res.status(500).json({
+			message: "Server error while fetching products.",
 		});
 	}
 };
