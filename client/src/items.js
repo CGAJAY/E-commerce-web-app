@@ -1,14 +1,5 @@
 export const items = [
 	{
-		id: 1,
-		imageUrl:
-			"https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		name: "Iphone 16",
-		description:
-			"Latest Iphone 16 with 1tb storage and 64gb ram.",
-		price: 79.99,
-	},
-	{
 		id: 2,
 		imageUrl:
 			"https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
@@ -24,6 +15,15 @@ export const items = [
 		name: "Wireless EHeadphones",
 		description:
 			"High-quality sound with long battery life",
+		price: 79.99,
+	},
+	{
+		id: 1,
+		imageUrl:
+			"https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+		name: "Iphone 16",
+		description:
+			"Latest Iphone 16 with 1tb storage and 64gb ram.",
 		price: 79.99,
 	},
 	{

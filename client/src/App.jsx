@@ -1,18 +1,23 @@
 import React from "react";
 import "@fontsource/roboto";
 import Header from "./components/Header";
-import Carousel from "./components/Carousel";
-import ItemsCard from "./components/ItemsCard";
 import Footer from "./components/Footer";
+import HomePage from "./pages/Homepage";
+import {
+	BrowserRouter as Router,
+	Route,
+	Routes,
+} from "react-router-dom";
 
 const App = () => {
 	return (
-		<>
+		<Router>
 			<Header />
-			<Carousel />
-			<ItemsCard />
+			<Routes>
+				<Route path="/" element={<HomePage />} />
+			</Routes>
 			<Footer />
-		</>
+		</Router>
 	);
 };
 

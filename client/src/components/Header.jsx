@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
 	FaBars,
 	FaSearch,
@@ -46,9 +47,12 @@ const Header = () => {
 
 					{/* Logo */}
 					<div className="flex items-center flex-shrink-0 absolute left-1/2 transform -translate-x-1/2 lg:static lg:translate-x-0 lg:mr-6">
-						<span className="font-semibold text-xl tracking-tight">
+						<Link
+							to="/"
+							className="font-semibold text-xl tracking-tight"
+						>
 							E-shop
-						</span>
+						</Link>
 					</div>
 
 					{/* Categories for Desktop layout */}
@@ -69,9 +73,9 @@ const Header = () => {
 						<button onClick={toggleSearch} className="">
 							<FaSearch className="h-5 w-5" />
 						</button>
-						<a href="#" className="">
+						<Link to="/profile" className="">
 							<FaUser className="h-5 w-5" />
-						</a>
+						</Link>
 
 						{/* Cart Icon with Item Count Badge */}
 						<div className="relative">
