@@ -8,8 +8,8 @@ import {
 } from "react-icons/fa";
 
 const Header = () => {
-	const [isSearchOpen, setIsSearchOpen] = useState(true);
-	const [isMenuOpen, setIsMenuOpen] = useState(true);
+	const [isSearchOpen, setIsSearchOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const closeMenu = () => {
 		setIsMenuOpen(false);
@@ -23,6 +23,9 @@ const Header = () => {
 		setIsSearchOpen(!isSearchOpen);
 	};
 
+	// Cart items count state
+	const [cartItems, setCartItems] = useState(0);
+
 	const categories = [
 		"phones",
 		"Laptops",
@@ -30,7 +33,7 @@ const Header = () => {
 		"Smartwatches",
 	];
 	return (
-		<header className="bg-white text-black">
+		<header className="bg-white text-black border-b-2">
 			<div className="container mx-auto px-4 py-4">
 				<div className="flex items-center justify-between">
 					{/* Hamburger menu for tablet and mobile layouts */}
@@ -54,7 +57,7 @@ const Header = () => {
 							<a
 								key={category}
 								href="#"
-								className="text-2xl hover:text-yellow-500"
+								className="text-2xl"
 							>
 								{category}
 							</a>
@@ -63,18 +66,22 @@ const Header = () => {
 
 					{/* Account and Cart for all layouts */}
 					<div className="flex items-center space-x-4">
-						<button
-							onClick={toggleSearch}
-							className="hover:text-yellow-500"
-						>
+						<button onClick={toggleSearch} className="">
 							<FaSearch className="h-5 w-5" />
 						</button>
-						<a href="#" className="hover:text-yellow-500">
+						<a href="#" className="">
 							<FaUser className="h-5 w-5" />
 						</a>
-						<a href="#" className="hover:text-yellow-500">
-							<FaShoppingBag className="h-5 w-5" />
-						</a>
+
+						{/* Cart Icon with Item Count Badge */}
+						<div className="relative">
+							<a href="#" className="">
+								<FaShoppingBag className="h-5 w-5" />
+							</a>
+							<span className="absolute -top-2 -right-2 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-blue-500 rounded-full">
+								{cartItems}
+							</span>
+						</div>
 						{/* <a href="#" className="hover:text-yellow-500">
 							Login / Sign Up
 						</a> */}
@@ -84,51 +91,49 @@ const Header = () => {
 
 			{/* Input for search when search icon is clicked*/}
 			{isSearchOpen && (
-				<div className="bg-gray-700 py-4">
-					<div className="container mx-auto px-4">
-						<form className="flex items-center">
-							<input
-								type="text"
-								placeholder="Search for products"
-								name=""
-								id=""
-								className="flex-grow p-2 rounded-l-md focus:outline-none text-gray-800"
-							/>
-							<button
-								type="submit"
-								className="bg-black text-white p-2 rounded-r-md hover:bg-gray-700 focus:outline-none"
-							>
-								Search
-							</button>
-						</form>
-					</div>
+				<div className=" p-4  bg-gray-200">
+					<form className="flex items-center">
+						<input
+							type="text"
+							placeholder="Search for products"
+							name=""
+							id=""
+							className="flex-grow p-2 rounded-l-md focus:outline-1 text-black"
+						/>
+						<button
+							type="submit"
+							className="bg-black text-white p-2 rounded-r-md"
+						>
+							Search
+						</button>
+					</form>
 				</div>
 			)}
 
 			{/* Menu for Categories in mobile and tablet view */}
 			<div
-				className={`fixed inset-x-0 top-0 z-50 bg-gray-800 transform ${
+				className={`fixed inset-x-0 top-0 z-50 bg-white transform ${
 					isMenuOpen ? "translate-y-0" : "-translate-y-full"
 				} transition-transform duration-300 ease-in-out lg:hidden`}
 			>
-				<div className="container mx-auto px-4 py-4">
-					<div className="flex justify-between items-center mb-4">
-						<span className="font-semibold text-xl">
+				<div className="cpx-4 py-4">
+					<div className="flex justify-between items-center mb-4 border-b-2 pb-2 px-5">
+						<span className="font-semibold text-2xl">
 							Categories
 						</span>
 						<button
 							onClick={closeMenu}
-							className="text-gray-300 hover:text-white"
+							className="text-black"
 						>
 							<FaTimes className="h-6 w-6" />
 						</button>
 					</div>
-					<nav className="flex flex-col space-y-2">
+					<nav className="flex flex-col space-y-2 items-center">
 						{categories.map((category) => (
 							<a
 								key={category}
 								href="#"
-								className="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded"
+								className="text-black text-2xl py-2 px-4"
 								onClick={closeMenu}
 							>
 								{category}
@@ -136,7 +141,7 @@ const Header = () => {
 						))}
 						<a
 							href="#"
-							className="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded"
+							className="text-black text-2xl py-2 px-4 "
 							onClick={closeMenu}
 						>
 							Login / Sign Up
