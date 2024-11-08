@@ -1,4 +1,3 @@
-// CartPage.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import useCartStore from "../store/useCartStore";
@@ -152,7 +151,7 @@ const CartPage = () => {
 									className="h-12 w-12"
 								/>
 								<img
-									src="ethereum-logo.svg"
+									src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Ethereum_logo.svg/735px-Ethereum_logo.svg.png"
 									alt="Ethereum"
 									className="h-12 w-12"
 								/>
