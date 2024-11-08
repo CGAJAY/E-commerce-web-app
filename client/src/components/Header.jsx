@@ -7,10 +7,14 @@ import {
 	FaUser,
 	FaTimes,
 } from "react-icons/fa";
+import useCartStore from "../store/useCartStore";
 
 const Header = () => {
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const cartItems = useCartStore(
+		(state) => state.cartItems
+	); // Access cart items from Zustand
 
 	const closeMenu = () => {
 		setIsMenuOpen(false);
@@ -23,9 +27,6 @@ const Header = () => {
 	const toggleSearch = () => {
 		setIsSearchOpen(!isSearchOpen);
 	};
-
-	// Cart items count state
-	const [cartItems, setCartItems] = useState(0);
 
 	const categories = [
 		"phones",
@@ -78,14 +79,13 @@ const Header = () => {
 						</Link>
 
 						{/* Cart Icon with Item Count Badge */}
-						<div className="relative">
-							<a href="#" className="">
-								<FaShoppingBag className="h-5 w-5" />
-							</a>
+						<Link to="/cart" className="relative">
+							<FaShoppingBag className="h-5 w-5" />
+
 							<span className="absolute -top-2 -right-2 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-blue-500 rounded-full">
-								{cartItems}
+								{cartItems.length}
 							</span>
-						</div>
+						</Link>
 						{/* <a href="#" className="hover:text-yellow-500">
 							Login / Sign Up
 						</a> */}
