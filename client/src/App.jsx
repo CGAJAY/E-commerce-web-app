@@ -15,7 +15,7 @@ import {
 
 const App = () => {
 	return (
-		<Router>
+		<Router future={{ v7_relativeSplatPath: true }}>
 			<Header />
 			<Routes>
 				<Route path="/" element={<HomePage />} />
