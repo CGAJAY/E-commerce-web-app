@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const { login } = useAuthStore((state) => state);
+	const navigate = useNavigate();
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -32,7 +34,11 @@ const Login = () => {
 			// Store user data in the Zustand store
 			login(data);
 
-			alert("Login successful");
+			// Redirect to home page and scroll to the top
+			navigate("/");
+			window.scrollTo(0, 0); // Scrolls to the top of the page
+
+			// alert("Login successful");
 		} catch (error) {
 			console.error("Login failed:", error.message);
 			alert("Login failed");
