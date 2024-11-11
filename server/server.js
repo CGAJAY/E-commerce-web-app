@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { configDotenv } from "dotenv";
 import connectDB from "./db/connectDB.js";
 import { v1Router } from "./routes/v1/index.js";
@@ -10,6 +11,19 @@ connectDB(); // Connect to the database
 
 const app = express(); // Create an Express application
 const PORT = process.env.PORT || 3000;
+
+// Enable CORS - Allow communication with front-end
+const corsOptions = {
+	origin: "http://localhost:5173",
+	methods: "*", // Allow all methods
+	// Allow cookies to be sent with requests
+	Credentials: true,
+	//
+	allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
 // Middleware to parse cookies
 app.use(cookieParser());

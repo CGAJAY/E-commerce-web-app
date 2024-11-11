@@ -109,7 +109,7 @@ export const loginUser = async (req, res) => {
 		generateJwtToken(res, userWithoutSensitiveFields);
 
 		// Respond with the filtered user details and a success message
-		res.status(201).json(userWithoutSensitiveFields);
+		res.status(200).json(userWithoutSensitiveFields);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: "Server error" });
