@@ -15,11 +15,7 @@ const PORT = process.env.PORT || 3000;
 // Enable CORS - Allow communication with front-end
 const corsOptions = {
 	origin: "http://localhost:5173",
-	methods: "*", // Allow all methods
-	// Allow cookies to be sent with requests
 	Credentials: true,
-	//
-	allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 // Apply CORS middleware
