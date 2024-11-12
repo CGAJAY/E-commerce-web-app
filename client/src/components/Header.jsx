@@ -143,13 +143,6 @@ const Header = () => {
 								{category}
 							</a>
 						))}
-						<a
-							href="#"
-							className="text-black text-2xl py-2 px-4 "
-							onClick={closeMenu}
-						>
-							Login / Sign Up
-						</a>
 					</nav>
 				</div>
 			</div>
