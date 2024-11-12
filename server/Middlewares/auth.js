@@ -48,3 +48,24 @@ export const isAdmin = (req, res, next) => {
 	// If the user is an admin, proceed to the next middleware or route handler
 	next();
 };
+
+// Verify the Cookie on Each Page Load
+export const verifyUser = async (req, res) => {
+	// Get the JWT (token) from the cookies
+	const token = req.cookies[process.env.AUTH_COOKIE_NAME];
+
+	if (!token)
+		return res
+			.status(401)
+			.json({ error: "Not authenticated" });
+
+	try {
+		const payload = jwt.verify(
+			token,
+			process.env.JWT_SECRET
+		);
+		res.status(200).json(payload.user);
+	} catch (error) {
+		res.status(401).json({ error: "Invalid token" });
+	}
+};
