@@ -35,7 +35,7 @@ const Login = () => {
 			login(data);
 
 			// Redirect to home page and scroll to the top
-			navigate("/");
+			navigate("/profile");
 			window.scrollTo(0, 0); // Scrolls to the top of the page
 
 			// alert("Login successful");

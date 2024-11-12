@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import useAuthStore from "./store/useAuthStore";
 import "@fontsource/roboto";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -14,6 +15,11 @@ import {
 } from "react-router-dom";
 
 const App = () => {
+	const loadUser = useAuthStore((state) => state.loadUser);
+
+	useEffect(() => {
+		loadUser(); // Loads user if valid session cookie is found
+	}, [loadUser]);
 	return (
 		<Router future={{ v7_relativeSplatPath: true }}>
 			<Header />
