@@ -120,6 +120,7 @@ export const loginUser = async (req, res) => {
 export const logoutUser = async (req, res) => {
 	// Clear the cookie when the user logs out
 	res
+		.status(200)
 		.clearCookie(process.env.AUTH_COOKIE_NAME)
 		.json({ message: "Logout Successful" });
 };
