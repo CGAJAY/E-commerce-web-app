@@ -53,18 +53,18 @@ export const isAdmin = (req, res, next) => {
 export const verifyUser = async (req, res) => {
 	// Get the JWT (token) from the cookies
 	const token = req.cookies[process.env.AUTH_COOKIE_NAME];
-
-	if (!token)
-		return res
-			.status(401)
-			.json({ error: "Not authenticated" });
-
 	try {
+		if (!token) {
+			return res
+				.status(401)
+				.json({ error: "Not authenticated" });
+		}
+
 		const payload = jwt.verify(
 			token,
 			process.env.JWT_SECRET
 		);
-		res.status(200).json(payload.user);
+		return res.status(200).json(payload.user);
 	} catch (error) {
 		res.status(401).json({ error: "Invalid token" });
 	}

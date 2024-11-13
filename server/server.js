@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 // Enable CORS - Allow communication with front-end
 const corsOptions = {
 	origin: "http://localhost:5173",
-	Credentials: true,
+	credentials: true,
 };
 
 // Apply CORS middleware
