@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-	// Local state for form inputs
+	// State to hold the form input data
 	const [formData, setFormData] = useState({
-		username: "",
-		firstName: "",
-		lastName: "",
-		email: "",
-		password: "",
+		username: "", // Initial empty value for username
+		firstName: "", // Initial empty value for first name
+		lastName: "", // Initial empty value for last name
+		email: "", // Initial empty value for email
+		password: "", // Initial empty value for password
 	});
 
-	// Local state for error messages
+	// State to hold any error messages
 	const [error, setError] = useState("");
+
+	// Initialize `useNavigate` hook to programmatically navigate between pages
+	const navigate = useNavigate();
 
 	// Handle input change
 	const handleInputChange = (e) => {
@@ -20,12 +24,12 @@ const SignUp = () => {
 		// Update the form data by keeping the previous state and updating the changed field
 		setFormData((prevState) => ({
 			...prevState,
-			// Set the value for the field being edited
+			// Dynamically set the field based on the 'name' attribute
 			[name]: value,
 		}));
 	};
 
-	// // Function to handle form submission when the user clicks "Sign Up"
+	// Function that runs when the user submits the signup form
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -48,33 +52,40 @@ const SignUp = () => {
 		) {
 			// Set error message if any field is empty
 			setError("All fields are required");
-			return; // Stop form submission if there's an error
+			return;
 		}
 
 		try {
-			// Send POST request to the server create a new user
-			const response = await fetch("", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					username,
-					firstName,
-					lastName,
-					email,
-					password,
-					role: "customer", // Default to 'customer'
-				}),
-			});
+			// Send POST request to the server to create a new user
+			const response = await fetch(
+				"http://localhost:3000/api/v1/auth/register",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						username,
+						firstName,
+						lastName,
+						email,
+						password,
+						role: "customer", // Default to 'customer'
+					}),
+				}
+			);
 
 			const data = await response.json();
 
 			if (response.ok) {
-				console.log("User created successfully", data);
+				// If registration is successful, navigate the user to the confirmation page
+				// We pass the email in the state so we can use it on the confirmation page
+				navigate("/confirm", { state: { email } });
 			} else {
-				// error message if the response is not ok
-				setError(data.message);
+				// If there was a problem sending the request, show a generic error message
+				setError(
+					"Failed to sign up. Please try again later."
+				);
 			}
 		} catch (error) {
 			setError(
