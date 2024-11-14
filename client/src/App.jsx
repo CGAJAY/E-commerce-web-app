@@ -8,10 +8,12 @@ import CartPage from "./pages/CartPage";
 import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import ConfirmEmail from "./pages/confirmEmail";
 import {
 	BrowserRouter as Router,
 	Route,
 	Routes,
+	Outlet,
 } from "react-router-dom";
 
 const App = () => {
@@ -22,17 +24,34 @@ const App = () => {
 	}, [loadUser]);
 	return (
 		<Router future={{ v7_relativeSplatPath: true }}>
-			<Header />
 			<Routes>
-				<Route path="/" element={<HomePage />} />
-				<Route path="/cart" element={<CartPage />} />
-				<Route path="/profile" element={<ProfilePage />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/signup" element={<SignUpPage />} />
+				{/* Routes with Header and Footer */}
+				<Route element={<LayoutWithHeaderFooter />}>
+					<Route path="/" element={<HomePage />} />
+					<Route path="/cart" element={<CartPage />} />
+					<Route
+						path="/profile"
+						element={<ProfilePage />}
+					/>
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignUpPage />} />
+				</Route>
+
+				{/* Route for ConfirmPage with only the confirm.jsx component */}
+				<Route path="/confirm" element={<ConfirmEmail />} />
 			</Routes>
-			<Footer />
 		</Router>
 	);
 };
+
+function LayoutWithHeaderFooter() {
+	return (
+		<>
+			<Header />
+			<Outlet />
+			<Footer />
+		</>
+	);
+}
 
 export default App;
