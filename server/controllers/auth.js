@@ -3,6 +3,7 @@ import User from "../db/models/User.js";
 import bcrypt from "bcryptjs";
 
 import { generateJwtToken } from "../utils/generate-jwt-token.js";
+import { sendConfirmationEmail } from "../utils/sendConfirmationEmail.js";
 
 // Controller function to handle user registration
 export const registerUser = async (req, res) => {
@@ -33,6 +34,11 @@ export const registerUser = async (req, res) => {
 		// Hashing the password using the generated salt
 		const hashedPassword = bcrypt.hashSync(password, salt);
 
+		// Generate a random 6-digit confirmation code
+		const confirmationCode = Math.floor(
+			100000 + Math.random() * 900000
+		);
+
 		// Create a new user in the database with the provided data
 		const newUser = await User.create({
 			username,
@@ -43,7 +49,12 @@ export const registerUser = async (req, res) => {
 			password: hashedPassword,
 			// Default role to 'customer' if not provided
 			role: role || "customer",
+			confirmationCode,
+			isConfirmed: false, // User is not confirmed by default
 		});
+
+		// Send the confirmation email
+		await sendConfirmationEmail(email, confirmationCode);
 
 		// Return success response with user details
 		res.status(201).json({
@@ -59,6 +70,33 @@ export const registerUser = async (req, res) => {
 		// Log the error for debugging
 		console.error("Error registering user:", error);
 		// Return generic server error message
+		res.status(500).json({ message: "Server error" });
+	}
+};
+
+//  checks the code the user enters if it matches the stored code, marks the user as confirmed.
+export const confirmCode = async (req, res) => {
+	const { email, code } = req.body;
+	try {
+		// find the user with the email passed
+		const user = await User.findOne({ email });
+
+		if (!user || user.confirmationCode !== parseInt(code)) {
+			return res
+				.status(400)
+				.json({ message: "Invalid code" });
+		}
+		// Update confirmation status
+		user.isConfirmed = true;
+		// Clear the confirmation code
+		user.confirmationCode = null;
+
+		await user.save();
+		return res
+			.status(200)
+			.json({ message: "Email confirmed successfully" });
+	} catch (error) {
+		console.error("Error confirming the code:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
