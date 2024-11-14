@@ -33,6 +33,14 @@ const userSchema = new Schema(
 			city: String,
 			zip: String,
 		},
+		confirmationCode: {
+			type: Number, // Stores the confirmation code
+			required: true,
+		},
+		isConfirmed: {
+			type: Boolean,
+			default: false, // User is not confirmed by default
+		},
 		role: {
 			type: String,
 			enum: ["customer", "admin"], // Only allow 'customer' or 'admin' roles
