@@ -3,7 +3,8 @@ import User from "../db/models/User.js";
 import bcrypt from "bcryptjs";
 
 import { generateJwtToken } from "../utils/generate-jwt-token.js";
-import { sendConfirmationEmail } from "../utils/sendConfirmationEmail.js";
+import { sendVerificationEmail } from "../utils/verificationEmail.js";
+import { generateVerificationCode } from "../utils/generateVerificationCode.js";
 
 // Controller function to handle user registration
 export const registerUser = async (req, res) => {
@@ -34,10 +35,7 @@ export const registerUser = async (req, res) => {
 		// Hashing the password using the generated salt
 		const hashedPassword = bcrypt.hashSync(password, salt);
 
-		// Generate a random 6-digit confirmation code
-		const confirmationCode = Math.floor(
-			100000 + Math.random() * 900000
-		);
+		const verificationCode = generateVerificationCode();
 
 		// Create a new user in the database with the provided data
 		const newUser = await User.create({
@@ -49,12 +47,12 @@ export const registerUser = async (req, res) => {
 			password: hashedPassword,
 			// Default role to 'customer' if not provided
 			role: role || "customer",
-			confirmationCode,
+			verificationCode,
 			isConfirmed: false, // User is not confirmed by default
 		});
 
 		// Send the confirmation email
-		await sendConfirmationEmail(email, confirmationCode);
+		await sendVerificationEmail(email, verificationCode);
 
 		// Return success response with user details
 		res.status(201).json({
@@ -75,29 +73,89 @@ export const registerUser = async (req, res) => {
 };
 
 //  checks the code the user enters if it matches the stored code, marks the user as confirmed.
-export const confirmCode = async (req, res) => {
+export const verifyEmail = async (req, res) => {
 	const { email, code } = req.body;
 	try {
+		// Check if user entered the code
+		if (!code) {
+			return res
+				.status(400)
+				.json({ message: "Please Enter the code." });
+		}
+
+		// Check if user entered the email
+		if (!email) {
+			return res
+				.status(400)
+				.json({ message: "Please Enter email." });
+		}
+
 		// find the user with the email passed
 		const user = await User.findOne({ email });
 
-		if (!user || user.confirmationCode !== parseInt(code)) {
+		if (!user) {
+			return res
+				.status(404)
+				.json({ message: "User not found." });
+		}
+
+		if (user.verificationCode !== parseInt(code)) {
 			return res
 				.status(400)
-				.json({ message: "Invalid code" });
+				.json({ message: "Invalid verification code." });
 		}
-		// Update confirmation status
-		user.isConfirmed = true;
-		// Clear the confirmation code
-		user.confirmationCode = null;
+
+		// Mark the user as verified
+		user.isVerified = true;
+		// Clear the code after successful verification
+		user.verificationCode = null;
 
 		await user.save();
 		return res
 			.status(200)
-			.json({ message: "Email confirmed successfully" });
+			.json({ message: "Email verified successfully." });
 	} catch (error) {
 		console.error("Error confirming the code:", error);
-		res.status(500).json({ message: "Server error" });
+		res.status(500).json({
+			message: "An error occurred. Please try again.",
+		});
+	}
+};
+
+export const resendCode = async (req, res) => {
+	const { email } = req.body;
+
+	if (!email) {
+		return res
+			.status(400)
+			.json({ message: "Email is required" });
+	}
+
+	try {
+		const user = await User.findOne({ email });
+
+		if (!user) {
+			return res
+				.status(404)
+				.json({ message: "User not found." });
+		}
+
+		// Generate a new code
+		const newCode = generateVerificationCode();
+		user.verificationCode = newCode;
+		await user.save();
+
+		// Send the confirmation email
+		await sendVerificationEmail(email, newCode);
+
+		res.status(200).json({
+			message: "A new code has been sent to your email.",
+		});
+	} catch (error) {
+		console.error("Error sending code", error);
+		res.status(500).json({
+			message: "An error occurred. Please try again.",
+		});
 	}
 };
 
