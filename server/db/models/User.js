@@ -33,11 +33,11 @@ const userSchema = new Schema(
 			city: String,
 			zip: String,
 		},
-		confirmationCode: {
+		verificationCode: {
 			type: Number, // Stores the confirmation code
-			required: true,
+			default: null,
 		},
-		isConfirmed: {
+		isVerified: {
 			type: Boolean,
 			default: false, // User is not confirmed by default
 		},
