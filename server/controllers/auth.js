@@ -1,6 +1,7 @@
 import User from "../db/models/User.js";
 // bcrypt for password hashing
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import { generateJwtToken } from "../utils/generate-jwt-token.js";
 import { sendVerificationEmail } from "../utils/verificationEmail.js";
@@ -245,5 +246,26 @@ export const deleteUser = async (req, res) => {
 		console.error(error);
 		// Send a 500 status if there's a server error
 		res.status(500).json({ message: "Server error" });
+	}
+};
+
+// Verify the Cookie on Each Page Load
+export const verifyUser = async (req, res) => {
+	// Get the JWT (token) from the cookies
+	const token = req.cookies[process.env.AUTH_COOKIE_NAME];
+	try {
+		if (!token) {
+			return res
+				.status(401)
+				.json({ error: "Not authenticated" });
+		}
+
+		const payload = jwt.verify(
+			token,
+			process.env.JWT_SECRET
+		);
+		return res.status(200).json(payload.user);
+	} catch (error) {
+		res.status(401).json({ error: "Invalid token" });
 	}
 };
