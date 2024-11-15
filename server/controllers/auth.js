@@ -49,6 +49,8 @@ export const registerUser = async (req, res) => {
 			// Default role to 'customer' if not provided
 			role: role || "customer",
 			verificationCode,
+			verificationCodeExpiresAt:
+				Date.now() + 24 * 60 * 60 * 1000, // 24hrs
 			isConfirmed: false, // User is not confirmed by default
 		});
 
@@ -75,7 +77,7 @@ export const registerUser = async (req, res) => {
 
 //  checks the code the user enters if it matches the stored code, marks the user as confirmed.
 export const verifyEmail = async (req, res) => {
-	const { email, code } = req.body;
+	const { code } = req.body;
 	try {
 		// Check if user entered the code
 		if (!code) {
@@ -84,34 +86,26 @@ export const verifyEmail = async (req, res) => {
 				.json({ message: "Please Enter the code." });
 		}
 
-		// Check if user entered the email
-		if (!email) {
-			return res
-				.status(400)
-				.json({ message: "Please Enter email." });
-		}
-
 		// find the user with the email passed
-		const user = await User.findOne({ email });
+		const user = await User.findOne({
+			verificationCode: code,
+			verificationCodeExpiresAt: { $gt: Date.now() },
+		});
 
 		if (!user) {
-			return res
-				.status(404)
-				.json({ message: "User not found." });
-		}
-
-		if (user.verificationCode !== parseInt(code)) {
-			return res
-				.status(400)
-				.json({ message: "Invalid verification code." });
+			return res.status(404).json({
+				message: "Invalid or expired verification code",
+			});
 		}
 
 		// Mark the user as verified
 		user.isVerified = true;
 		// Clear the code after successful verification
-		user.verificationCode = null;
+		user.verificationCode = undefined;
+		user.verificationCodeExpiresAt = undefined;
 
 		await user.save();
+
 		return res
 			.status(200)
 			.json({ message: "Email verified successfully." });
@@ -144,9 +138,13 @@ export const resendCode = async (req, res) => {
 		// Generate a new code
 		const newCode = generateVerificationCode();
 		user.verificationCode = newCode;
+		user.verificationCodeExpiresAt =
+			Date.now() + 24 * 60 * 60 * 1000;
+
+		// Save the user with the updated verification details
 		await user.save();
 
-		// Send the confirmation email
+		// Send the verification email
 		await sendVerificationEmail(email, newCode);
 
 		res.status(200).json({

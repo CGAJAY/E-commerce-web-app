@@ -34,8 +34,10 @@ const userSchema = new Schema(
 			zip: String,
 		},
 		verificationCode: {
-			type: Number, // Stores the confirmation code
-			default: null,
+			type: Number,
+		},
+		verificationCodeExpiresAt: {
+			type: Date,
 		},
 		isVerified: {
 			type: Boolean,
