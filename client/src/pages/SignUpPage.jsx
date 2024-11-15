@@ -78,9 +78,12 @@ const SignUp = () => {
 			const data = await response.json();
 
 			if (response.ok) {
-				// If registration is successful, navigate the user to the confirmation page
-				// We pass the email in the state so we can use it on the confirmation page
-				navigate("/confirm", { state: { email } });
+				// Navigate to the email confirmation page with the email as a query param
+				navigate(
+					`/confirm-email?email=${encodeURIComponent(
+						email
+					)}`
+				);
 			} else {
 				// If there was a problem sending the request, show a generic error message
 				setError(

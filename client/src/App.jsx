@@ -8,7 +8,8 @@ import CartPage from "./pages/CartPage";
 import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import ConfirmEmail from "./pages/confirmEmail";
+import EmailVerification from "./pages/EmailVerification";
+
 import {
 	BrowserRouter as Router,
 	Route,
@@ -38,7 +39,10 @@ const App = () => {
 				</Route>
 
 				{/* Route for ConfirmPage with only the confirm.jsx component */}
-				<Route path="/confirm" element={<ConfirmEmail />} />
+				<Route
+					path="/confirm-email"
+					element={<EmailVerification />}
+				/>
 			</Routes>
 		</Router>
 	);
