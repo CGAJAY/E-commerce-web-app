@@ -5,12 +5,14 @@ import {
 	logoutUser,
 	verifyEmail,
 	resendCode,
+	verifyUser,
 } from "../../controllers/auth.js";
 import {
 	validateUserRegistration,
 	validateLogin,
 } from "../../Middlewares/userValidator.js";
-import { verifyUser } from "../../controllers/auth.js";
+import { singleFileUpload } from "../../multer/singleFileUpload.js";
+import { requiresAuthentication } from "../../Middlewares/auth.js";
 
 const authRouter = Router();
 
@@ -31,8 +33,15 @@ authRouter.post("/resend-code", resendCode);
 authRouter.post("/login", validateLogin, loginUser);
 
 // /api/v1/auth/verify
-authRouter.post("/verify", verifyUser);
+authRouter.get("/verify", verifyUser);
 
 // /api/v1/auth/logout
 authRouter.delete("/logout", logoutUser);
+
+authRouter.post(
+	"/upload-photo",
+	requiresAuthentication,
+	singleFileUpload
+);
+
 export { authRouter };
