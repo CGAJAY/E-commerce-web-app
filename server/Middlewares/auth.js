@@ -1,4 +1,5 @@
 // middleware to check user Authentication
+import jwt from "jsonwebtoken";
 export const requiresAuthentication = (req, res, next) => {
 	// Get the JWT (token) from the cookies
 	const token = req.cookies[process.env.AUTH_COOKIE_NAME];
@@ -27,7 +28,7 @@ export const requiresAuthentication = (req, res, next) => {
 	} catch (error) {
 		return res
 			.status(401)
-			.json({ message: "You are not authenticated" });
+			.json({ message: "server error" });
 	}
 };
 

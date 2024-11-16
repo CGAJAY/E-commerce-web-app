@@ -28,6 +28,10 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		profilePhoto: {
+			type: String,
+			default: "",
+		},
 		address: {
 			street: String,
 			city: String,
