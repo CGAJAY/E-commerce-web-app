@@ -18,8 +18,10 @@ const useAuthStore = create((set) => ({
 			if (response.ok) {
 				const data = await response.json();
 				set({ user: data, isAuthenticated: true });
+				console.log(data);
 			} else {
 				set({ user: null, isAuthenticated: false });
+				console.log(data);
 			}
 		} catch {
 			set({ user: null, isAuthenticated: false });
@@ -30,6 +32,12 @@ const useAuthStore = create((set) => ({
 		set({ user: userData, isAuthenticated: true }),
 	// function that clears the user state by setting it to null
 	logout: () => set({ user: null, isAuthenticated: false }),
+
+	// Function to update the user's profile photo
+	updateProfilePhoto: (photoUrl) =>
+		set((state) => ({
+			user: { ...state.user, profilePhoto: photoUrl },
+		})),
 }));
 
 export default useAuthStore;
