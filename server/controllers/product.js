@@ -6,8 +6,16 @@ import Category from "../db/models/category.js";
 
 // Function to create a new product
 export const createProduct = async (req, res) => {
+	const { name, price, categorySlug, description, stock } =
+		req.body;
+
 	try {
-		const { name, price, stock, categorySlug } = req.body;
+		// Check if a file was uploaded
+		if (!req.file) {
+			return res.status(400).json({
+				message: "Product image is required",
+			});
+		}
 
 		// Find the category by its slug
 		const category = await Category.findOne({
@@ -32,10 +40,13 @@ export const createProduct = async (req, res) => {
 		// Create the new product using the found category's _id
 		const newProduct = await Product.create({
 			name,
-			price,
+			price: parseInt(price),
+			category: category._id, // Use category's ObjectId
 			stock: parseInt(stock),
-			category: category._id,
+			description,
+			image: `http://localhost:3000/uploads/${req.file.filename}`, // Set the file path as image URL
 		});
+		console.log(newProduct);
 
 		// Respond with the created product
 		res.status(201).json(newProduct);
