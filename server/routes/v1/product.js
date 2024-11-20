@@ -12,6 +12,9 @@ import {
 	isAdmin,
 	requiresAuthentication,
 } from "../../Middlewares/auth.js";
+// import productFileUpload from "../../multer/productFileUpload.js";
+import multer from "multer";
+import { productFileUpload } from "../../multer/productFileUpload.js";
 
 const productRouter = Router();
 
@@ -28,9 +31,22 @@ productRouter.use(requiresAuthentication, isAdmin);
 
 // PROTECTED ROUTES
 
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "uploads/");
+	},
+	filename: (req, file, cb) => {
+		cb(null, `${Date.now()}-${file.originalname}`);
+	},
+});
+
+const upload = multer({ storage: storage });
+
 // /api/v1/products/add
 productRouter.post(
 	"/add",
+	isAdmin,
+	productFileUpload,
 	validateNewProduct,
 	createProduct
 );

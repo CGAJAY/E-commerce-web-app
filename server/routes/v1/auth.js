@@ -11,7 +11,7 @@ import {
 	validateUserRegistration,
 	validateLogin,
 } from "../../Middlewares/userValidator.js";
-import { singleFileUpload } from "../../multer/singleFileUpload.js";
+import { profileFileUpload } from "../../multer/profileFileUpload.js";
 import { requiresAuthentication } from "../../Middlewares/auth.js";
 
 const authRouter = Router();
@@ -41,7 +41,7 @@ authRouter.delete("/logout", logoutUser);
 authRouter.post(
 	"/upload-photo",
 	requiresAuthentication,
-	singleFileUpload
+	profileFileUpload
 );
 
 export { authRouter };
