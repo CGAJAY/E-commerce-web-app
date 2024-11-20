@@ -5,53 +5,31 @@ export const validateNewProduct = async (
 	next
 ) => {
 	// Get the product details from the request body
-	const { name, price, stock, categorySlug } = req.body;
+	const { name, price, stock, categorySlug, description } =
+		req.body;
 	try {
-		// Check if all required fields are provided
-		// If any field is missing, respond with a 400 Bad Request error
-		// If at least one of the operands evaluates to a truthy value, the expression returns that truthy value.
 		if (
 			!name ||
 			!price ||
 			!categorySlug ||
-			stock === undefined // stock can be 0 which is a falsy value
+			!description ||
+			!stock
 		) {
 			return res.status(400).json({
 				message: "All fields are required",
 			});
 		}
 
-		// Check if name is an empty string
-		if (name.trim() === "") {
-			return res
-				.status(400)
-				.json({ message: "name cannot be empty" });
+		if (isNaN(price) || price <= 0) {
+			return res.status(400).json({
+				message: "Price must be a valid positive number",
+			});
 		}
 
-		// Check if price is an empty string
-		if (price.trim() === "") {
-			return res
-				.status(400)
-				.json({ message: "price cannot be empty" });
-		}
-
-		// Check if category is an empty string
-		if (categorySlug.trim() === "") {
-			return res
-				.status(400)
-				.json({ message: "category cannot be empty" });
-		}
-
-		// Check if stock is an empty string
-		if (stock.trim() === "") {
-			return res
-				.status(400)
-				.json({ message: "stock cannot be empty" });
-		}
-
-		if (isNaN(parseInt(stock))) {
-			return res.status(StatusCodes.BAD_REQUEST).json({
-				message: "stock must be a number",
+		if (isNaN(stock) || stock < 0) {
+			return res.status(400).json({
+				message:
+					"Stock must be a valid non-negative number",
 			});
 		}
 
