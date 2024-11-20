@@ -2,29 +2,34 @@
 import { create } from "zustand";
 
 const useCartStore = create((set) => ({
-	cartItems: [
-		{
-			id: 3,
-			imageUrl:
-				"https://images.pexels.com/photos/1649771/pexels-photo-1649771.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-			name: "Wireless Headphones",
-			description:
-				"High-quality sound with long battery life",
-			price: 79.99,
-			quantity: 2,
-		},
-	],
+	cart: [],
+
+	// Add an item to the cart
 	addToCart: (item) =>
-		set((state) => ({
-			cartItems: [...state.cartItems, item],
-		})),
-	removeFromCart: (id) =>
-		set((state) => ({
-			cartItems: state.cartItems.filter(
-				(item) => item.id !== id
-			),
-		})),
-	clearCart: () => set({ cartItems: [] }),
+		set((state) => {
+			const existingItem = state.cart.find(
+				(cartItem) => cartItem._id === item._id
+			);
+
+			if (existingItem) {
+				// Increment the quantity if the item already exists
+				return {
+					cart: state.cart.map((cartItem) =>
+						cartItem._id === item._id
+							? {
+									...cartItem,
+									quantity: cartItem.quantity + 1,
+							  }
+							: cartItem
+					),
+				};
+			}
+
+			// Add the item to the cart with a quantity of 1
+			return {
+				cart: [...state.cart, { ...item, quantity: 1 }],
+			};
+		}),
 }));
 
 export default useCartStore;

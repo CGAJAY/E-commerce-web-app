@@ -7,10 +7,10 @@ import {
 } from "react-icons/fa";
 
 const CartPage = () => {
-	const { cartItems } = useCartStore();
+	const cart = useCartStore((state) => state.cart);
 
 	// Calculate Subtotal and Total
-	const subtotal = cartItems.reduce(
+	const subtotal = cart.reduce(
 		(acc, item) => acc + item.price * item.quantity,
 		0
 	);
@@ -18,7 +18,7 @@ const CartPage = () => {
 	return (
 		<div className="container mx-auto p-4">
 			{/* If cart is empty */}
-			{cartItems.length === 0 ? (
+			{cart.length === 0 ? (
 				<div className="text-center py-20">
 					<FaShoppingBag className="mx-auto text-6xl text-black mb-4" />
 					<h2 className="text-4xl font-bold mb-2">
@@ -51,13 +51,13 @@ const CartPage = () => {
 							YOUR BAG
 						</h2>
 						<div className="space-y-4">
-							{cartItems.map((item) => (
+							{cart.map((item) => (
 								<div
-									key={item.id}
+									key={item._id}
 									className="flex items-center space-x-4"
 								>
 									<img
-										src={item.imageUrl}
+										src={item.image}
 										alt={item.name}
 										className="w-40 h-40 object-cover"
 									/>

@@ -12,9 +12,7 @@ import useCartStore from "../store/useCartStore";
 const Header = () => {
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const cartItems = useCartStore(
-		(state) => state.cartItems
-	); // Access cart items from Zustand
+	const cart = useCartStore((state) => state.cart); // Access cart items from Zustand
 
 	const closeMenu = () => {
 		setIsMenuOpen(false);
@@ -83,7 +81,7 @@ const Header = () => {
 							<FaShoppingBag className="h-5 w-5" />
 
 							<span className="absolute -top-2 -right-2 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-blue-500 rounded-full">
-								{cartItems.length}
+								{cart.length}
 							</span>
 						</Link>
 						{/* <a href="#" className="hover:text-yellow-500">
