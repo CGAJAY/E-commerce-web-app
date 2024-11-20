@@ -23,6 +23,15 @@ const productSchema = new Schema(
 			required: true,
 			default: 0,
 		},
+		description: {
+			type: String,
+			required: true,
+			trim: true,
+		},
+		image: {
+			type: String, // Stores the file path or URL
+			required: true,
+		},
 	},
 	{ timestamps: true } // Enable timestamps
 );
