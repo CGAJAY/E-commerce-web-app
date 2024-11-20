@@ -5,7 +5,7 @@ const ItemCard = ({ item }) => {
 		<div className="flex flex-col rounded-lg shadow-md overflow-hidden cursor-pointer">
 			<div className="relative h-48 md:h-64 lg:h-80">
 				<img
-					src={item.imageUrl}
+					src={item.image}
 					alt={item.name}
 					className="w-full h-full object-cover"
 				/>
