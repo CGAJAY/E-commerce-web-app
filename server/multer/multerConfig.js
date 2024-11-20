@@ -16,6 +16,7 @@ const __dirname = path.dirname(
 // Set up storage configuration for multer
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
+		// files will be saved in the uploads folder
 		cb(null, path.join(__dirname, "../uploads"));
 	},
 	filename: (req, file, cb) => {
@@ -42,7 +43,7 @@ const fileFilter = (req, file, cb) => {
 // Set up multer
 const upload = multer({
 	storage,
-	limits: { fileSize: 100 * 1024 * 1024 }, // 4MB limit
+	limits: { fileSize: 100 * 1024 * 1024 },
 	fileFilter,
 });
 

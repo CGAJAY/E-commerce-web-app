@@ -3,16 +3,16 @@ import upload from "./multerConfig.js";
 import User from "../db/models/User.js";
 
 // Single File Upload Controller
-export const singleFileUpload = async (req, res) => {
-	// Use multer middleware
-	upload.single("file")(req, res, async (err) => {
+export const profileFileUpload = async (req, res) => {
+	//Make sure the key name of the file is profile
+	upload.single("profile")(req, res, async (err) => {
 		console.log(req.user);
 		if (err) {
 			// Handle multer-specific errors
 			if (err.code === "LIMIT_FILE_SIZE") {
 				return res
 					.status(400)
-					.json({ error: "File size exceeds 4MB!" });
+					.json({ error: "File is too large!" });
 			}
 			// Handle other multer errors
 			return res.status(400).json({ error: err.message });

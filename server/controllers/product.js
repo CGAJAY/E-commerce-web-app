@@ -17,6 +17,8 @@ export const createProduct = async (req, res) => {
 			});
 		}
 
+		const imageUrl = `http://localhost:3000/uploads/${req.file.filename}`;
+
 		// Find the category by its slug
 		const category = await Category.findOne({
 			slug: categorySlug,
@@ -44,9 +46,8 @@ export const createProduct = async (req, res) => {
 			category: category._id, // Use category's ObjectId
 			stock: parseInt(stock),
 			description,
-			image: `http://localhost:3000/uploads/${req.file.filename}`, // Set the file path as image URL
+			image: imageUrl, // Set the file path as image URL
 		});
-		console.log(newProduct);
 
 		// Respond with the created product
 		res.status(201).json(newProduct);
