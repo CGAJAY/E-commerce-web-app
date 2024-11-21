@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useAuthStore from "./store/useAuthStore";
+import useCartStore from "./store/useCartStore";
 import "@fontsource/roboto";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -19,6 +20,11 @@ import {
 
 const App = () => {
 	const loadUser = useAuthStore((state) => state.loadUser);
+	const loadCart = useCartStore((state) => state.loadCart);
+
+	useEffect(() => {
+		loadCart(); // Load cart from localStorage
+	}, []);
 
 	useEffect(() => {
 		loadUser(); // Loads user if valid session cookie is found

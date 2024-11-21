@@ -1,35 +1,51 @@
-// store.js
 import { create } from "zustand";
 
-const useCartStore = create((set) => ({
+// Zustand store for managing the shopping cart
+const useCartStore = create((set, get) => ({
+	// Initial state: An empty cart
 	cart: [],
 
-	// Add an item to the cart
-	addToCart: (item) =>
-		set((state) => {
-			const existingItem = state.cart.find(
-				(cartItem) => cartItem._id === item._id
+	// Function to add an item to the cart
+	addToCart: (item) => {
+		// Check if the item already exists in the cart
+		const existingItem = get().cart.find(
+			(cartItem) => cartItem._id === item._id
+		);
+
+		let updatedCart;
+		if (existingItem) {
+			// If the item exists, increment its quantity
+			updatedCart = get().cart.map((cartItem) =>
+				cartItem._id === item._id
+					? {
+							...cartItem,
+							quantity: cartItem.quantity + 1,
+					  }
+					: cartItem
 			);
+		} else {
+			// If the item doesn't exist, add it to the cart with a quantity of 1
+			updatedCart = [
+				...get().cart,
+				{ ...item, quantity: 1 },
+			];
+		}
 
-			if (existingItem) {
-				// Increment the quantity if the item already exists
-				return {
-					cart: state.cart.map((cartItem) =>
-						cartItem._id === item._id
-							? {
-									...cartItem,
-									quantity: cartItem.quantity + 1,
-							  }
-							: cartItem
-					),
-				};
-			}
+		// update the cart state with the new or updated item
+		set({ cart: updatedCart });
 
-			// Add the item to the cart with a quantity of 1
-			return {
-				cart: [...state.cart, { ...item, quantity: 1 }],
-			};
-		}),
+		// Save the updated cart to localStorage for persistence
+		localStorage.setItem(
+			"cart",
+			JSON.stringify(updatedCart)
+		);
+	},
+	loadCart: () => {
+		const storedCart = localStorage.getItem("cart");
+		if (storedCart) {
+			set({ cart: JSON.parse(storedCart) });
+		}
+	},
 }));
 
 export default useCartStore;
