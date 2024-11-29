@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import EmailVerification from "./pages/EmailVerification";
 
+import MpesaPaymentPage from "./pages/MpesaPaymentPage";
 import {
 	BrowserRouter as Router,
 	Route,
@@ -44,10 +45,14 @@ const App = () => {
 					<Route path="/signup" element={<SignUpPage />} />
 				</Route>
 
-				{/* Route for ConfirmPage with only the confirm.jsx component */}
+				{/* Routes without header and footer  */}
 				<Route
 					path="/confirm-email"
 					element={<EmailVerification />}
+				/>
+				<Route
+					path="mpesa-payment"
+					element={<MpesaPaymentPage />}
 				/>
 			</Routes>
 		</Router>

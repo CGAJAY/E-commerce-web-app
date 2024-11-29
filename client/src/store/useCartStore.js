@@ -39,6 +39,10 @@ const useCartStore = create((set, get) => ({
 			"cart",
 			JSON.stringify(updatedCart)
 		);
+		console.log(
+			"Cart Updated:",
+			JSON.stringify(updatedCart)
+		);
 	},
 	loadCart: () => {
 		const storedCart = localStorage.getItem("cart");

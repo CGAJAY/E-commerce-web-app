@@ -9,6 +9,9 @@ import {
 const CartPage = () => {
 	const cart = useCartStore((state) => state.cart);
 
+	console.log("Cart Contents:", cart[0]);
+	// console.log("Cart Contents:", cart[0].product);
+
 	// Calculate Subtotal and Total
 	const subtotal = cart.reduce(
 		(acc, item) => acc + item.price * item.quantity,
