@@ -43,7 +43,7 @@ const MpesaPaymentPage = () => {
 	};
 
 	return (
-		<div className="container mx-auto p-4">
+		<div className="p-4 flex items-center flex-col justify-center h-screen">
 			<h1 className="text-3xl font-bold text-center mb-6">
 				Mpesa Payment
 			</h1>
