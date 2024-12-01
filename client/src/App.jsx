@@ -11,7 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import EmailVerification from "./pages/EmailVerification";
 
-import MpesaPaymentPage from "./pages/MpesaPaymentPage";
+import CryptoPaymentPage from "./pages/CryptoPaymentPage";
 import {
 	BrowserRouter as Router,
 	Route,
@@ -51,8 +51,8 @@ const App = () => {
 					element={<EmailVerification />}
 				/>
 				<Route
-					path="mpesa-payment"
-					element={<MpesaPaymentPage />}
+					path="payment"
+					element={<CryptoPaymentPage />}
 				/>
 			</Routes>
 		</Router>

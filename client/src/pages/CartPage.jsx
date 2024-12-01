@@ -131,7 +131,7 @@ const CartPage = () => {
 							</div>
 						</div>
 						<Link
-							to="/checkout"
+							to="/payment"
 							className="block w-full relative bg-black border border-black px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:text-gray-500"
 						>
 							<span className="w-full block -z-10 absolute top-5 border-2 border-black -right-2 bg-white">
