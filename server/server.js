@@ -20,7 +20,7 @@ const __dirname = path.dirname(
 
 // Enable CORS - Allow communication with front-end
 const corsOptions = {
-	origin: "http://localhost:5173",
+	origin: process.env.FRONTEND_URL,
 	credentials: true,
 };
 

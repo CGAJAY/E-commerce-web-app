@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ItemCard from "./ItemCard";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ItemsCard = () => {
 	const [items, setItems] = useState([]); // State to store the fetched items
@@ -11,7 +12,7 @@ const ItemsCard = () => {
 		const fetchItems = async () => {
 			try {
 				const response = await fetch(
-					"http://localhost:3000/api/v1/products"
+					`${backendUrl}/api/v1/products`
 				); // Replace with your actual API endpoint
 				if (!response.ok) {
 					throw new Error("Failed to fetch items");

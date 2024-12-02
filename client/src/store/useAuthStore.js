@@ -1,4 +1,5 @@
 import { create } from "zustand";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const useAuthStore = create((set) => ({
 	// set to null, meaning no one is logged in by default.
@@ -8,7 +9,7 @@ const useAuthStore = create((set) => ({
 	loadUser: async () => {
 		try {
 			const response = await fetch(
-				"http://localhost:3000/api/v1/auth/verify",
+				`${backendUrl}api/v1/auth/verify`,
 				{
 					method: "GET",
 					headers: { "Content-Type": "application/json" },
