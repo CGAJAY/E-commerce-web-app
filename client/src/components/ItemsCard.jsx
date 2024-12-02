@@ -20,6 +20,7 @@ const ItemsCard = () => {
 				const data = await response.json();
 				setItems(data); // Set the fetched items to state
 			} catch (err) {
+				console.log(err);
 				setError(err.message); // Set error if the fetch fails
 			} finally {
 				setLoading(false); // Stop loading once the request is complete

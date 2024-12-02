@@ -9,7 +9,7 @@ const useAuthStore = create((set) => ({
 	loadUser: async () => {
 		try {
 			const response = await fetch(
-				`${backendUrl}api/v1/auth/verify`,
+				`${backendUrl}/api/v1/auth/verify`,
 				{
 					method: "GET",
 					headers: { "Content-Type": "application/json" },
