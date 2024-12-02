@@ -7,6 +7,7 @@ const ItemsCard = () => {
 	const [loading, setLoading] = useState(true); // State to manage loading state
 	const [error, setError] = useState(null); // State to manage error handling
 
+	console.log(backendUrl);
 	useEffect(() => {
 		// Fetch the items from the backend API
 		const fetchItems = async () => {
