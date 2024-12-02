@@ -1,5 +1,5 @@
 import { create } from "zustand";
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const useAuthStore = create((set) => ({
 	// set to null, meaning no one is logged in by default.

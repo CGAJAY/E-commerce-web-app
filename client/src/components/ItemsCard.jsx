@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ItemCard from "./ItemCard";
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const ItemsCard = () => {
 	const [items, setItems] = useState([]); // State to store the fetched items
@@ -8,7 +8,6 @@ const ItemsCard = () => {
 	const [error, setError] = useState(null); // State to manage error handling
 
 	console.log(backendUrl);
-	console.log(process.env.REACT_APP_BACKEND_URL);
 	useEffect(() => {
 		// Fetch the items from the backend API
 		const fetchItems = async () => {
