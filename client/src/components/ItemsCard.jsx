@@ -8,6 +8,7 @@ const ItemsCard = () => {
 	const [error, setError] = useState(null); // State to manage error handling
 
 	console.log(backendUrl);
+	console.log(process.env.REACT_APP_BACKEND_URL);
 	useEffect(() => {
 		// Fetch the items from the backend API
 		const fetchItems = async () => {
