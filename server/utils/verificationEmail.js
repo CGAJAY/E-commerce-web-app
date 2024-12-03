@@ -54,7 +54,7 @@ export const sendVerificationEmail = async (
 			>
 				<p style="font-size: 18px; color: #333">Hello,</p>
 				<p style="font-size: 18px; color: #333">
-					Thank you for registering with us!
+					Thank you for registering with E-shop!
 				</p>
 				<p style="font-size: 18px; color: #333">
 					Your confirmation code is:
@@ -80,7 +80,7 @@ export const sendVerificationEmail = async (
 				"
 			>
 				<p style="font-size: 14px">
-					&copy; 2024 Your Company Name
+					&copy; 2024 E-shop
 				</p>
 			</div>
 		</div>`,
