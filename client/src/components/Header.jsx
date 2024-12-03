@@ -45,10 +45,10 @@ const Header = ({ onCategorySelect, resetCategory }) => {
 
 	if (isAuthenticated && user?.role === "admin") {
 		return (
-			<div className="flex justify-between px-2 py-4 bg-white text-black border-b-2 sticky top-0 z-10">
+			<div className="flex justify-between px-2 py-4 bg-white text-black border-b-2 sticky top-0 z-10 md:justify-center">
 				<Link
 					to="/"
-					className="font-semibold text-xl tracking-tight"
+					className="font-semibold text-xl tracking-tight md:mr-32"
 				>
 					E-shop
 				</Link>
