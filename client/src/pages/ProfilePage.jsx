@@ -85,7 +85,7 @@ const Profile = () => {
 								className="w-full h-full object-cover rounded-full"
 							/>
 							{/* Font Awesome Camera Icon */}
-							<span className="bg-blue-500 rounded-full  absolute z-50 bottom-5 right-1 p-3">
+							<span className="bg-blue-500 rounded-full  absolute z-6 bottom-5 right-1 p-3">
 								<FaCamera size={30} color="white" />
 							</span>
 						</div>
