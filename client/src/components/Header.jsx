@@ -7,13 +7,20 @@ import {
 	FaUser,
 	FaTimes,
 } from "react-icons/fa";
+// Import useCartStore to access user cart
 import useCartStore from "../store/useCartStore";
+// Import useAuthStore to access user data
+import useAuthStore from "../store/useAuthStore";
 
 const Header = ({ onCategorySelect, resetCategory }) => {
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	// Access cart items from Zustand
 	const cart = useCartStore((state) => state.cart);
+	// Access user state
+	const { user, isAuthenticated } = useAuthStore(
+		(state) => state
+	);
 
 	const closeMenu = () => {
 		setIsMenuOpen(false);
@@ -33,6 +40,25 @@ const Header = ({ onCategorySelect, resetCategory }) => {
 		"Headphones",
 		"Smart watch",
 	];
+
+	// Helper function to render admin UI
+
+	if (isAuthenticated && user?.role === "admin") {
+		return (
+			<div className="flex justify-between px-2 py-4 bg-white text-black border-b-2 sticky top-0 z-10">
+				<Link
+					to="/"
+					className="font-semibold text-xl tracking-tight"
+				>
+					E-shop
+				</Link>
+				<Link to="/profile" className="">
+					<FaUser className="h-5 w-5" />
+				</Link>
+			</div>
+		);
+	}
+
 	return (
 		<header className="bg-white text-black border-b-2 sticky top-0 z-10">
 			<div className="container mx-auto px-4 py-4">
