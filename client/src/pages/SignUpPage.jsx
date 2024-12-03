@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const SignUp = () => {
 	// State to hold the form input data
@@ -58,7 +59,7 @@ const SignUp = () => {
 		try {
 			// Send POST request to the server to create a new user
 			const response = await fetch(
-				"http://localhost:3000/api/v1/auth/register",
+				`${backendUrl}/api/v1/auth/register`,
 				{
 					method: "POST",
 					headers: {

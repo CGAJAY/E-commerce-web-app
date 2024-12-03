@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
 	const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ const Login = () => {
 		try {
 			// Send login data to the backend
 			const response = await fetch(
-				"http://localhost:3000/api/v1/auth/login",
+				`${backendUrl}/api/v1/auth/login`,
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },

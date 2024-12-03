@@ -3,6 +3,7 @@ import {
 	useSearchParams,
 	useNavigate,
 } from "react-router-dom";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const EmailVerification = () => {
 	const [searchParams] = useSearchParams();
@@ -29,7 +30,7 @@ const EmailVerification = () => {
 
 		try {
 			const response = await fetch(
-				"http://localhost:3000/api/v1/auth/verify-email",
+				`${backendUrl}/api/v1/auth/verify-email`,
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
