@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useAuthStore from "./store/useAuthStore";
 import useCartStore from "./store/useCartStore";
 import "@fontsource/roboto";
@@ -60,10 +60,23 @@ const App = () => {
 };
 
 function LayoutWithHeaderFooter() {
+	// State to track selected category
+	const [selectedCategory, setSelectedCategory] =
+		useState(null);
+
+	// Reset to show all products
+	const resetCategory = () => {
+		setSelectedCategory(null);
+	};
 	return (
 		<>
-			<Header />
-			<Outlet />
+			{/* Pass category handler to Header */}
+			<Header
+				onCategorySelect={setSelectedCategory}
+				resetCategory={resetCategory}
+			/>
+			{/* Pass selected category to child components */}
+			<Outlet context={{ selectedCategory }} />
 			<Footer />
 		</>
 	);

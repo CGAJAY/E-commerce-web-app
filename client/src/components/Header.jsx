@@ -9,10 +9,11 @@ import {
 } from "react-icons/fa";
 import useCartStore from "../store/useCartStore";
 
-const Header = () => {
+const Header = ({ onCategorySelect, resetCategory }) => {
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const cart = useCartStore((state) => state.cart); // Access cart items from Zustand
+	// Access cart items from Zustand
+	const cart = useCartStore((state) => state.cart);
 
 	const closeMenu = () => {
 		setIsMenuOpen(false);
@@ -27,10 +28,10 @@ const Header = () => {
 	};
 
 	const categories = [
-		"phones",
+		"Mobile phones",
 		"Laptops",
 		"Headphones",
-		"Smartwatches",
+		"Smart watch",
 	];
 	return (
 		<header className="bg-white text-black border-b-2 sticky top-0 z-10">
@@ -49,6 +50,8 @@ const Header = () => {
 						<Link
 							to="/"
 							className="font-semibold text-xl tracking-tight"
+							// Reset category on click
+							onClick={resetCategory}
 						>
 							E-shop
 						</Link>
@@ -61,6 +64,11 @@ const Header = () => {
 								key={category}
 								href="#"
 								className="text-2xl"
+								onClick={(e) => {
+									e.preventDefault();
+									// Notify parent of selected category
+									onCategorySelect(category.toLowerCase());
+								}}
 							>
 								{category}
 							</a>
@@ -136,7 +144,11 @@ const Header = () => {
 								key={category}
 								href="#"
 								className="text-black text-2xl py-2 px-4"
-								onClick={closeMenu}
+								onClick={(e) => {
+									e.preventDefault();
+									onCategorySelect(category.toLowerCase());
+									closeMenu();
+								}}
 							>
 								{category}
 							</a>
