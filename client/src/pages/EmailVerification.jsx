@@ -96,8 +96,10 @@ const EmailVerification = () => {
 				</h1>
 				<p className="text-gray-700 mb-6">
 					We’ve sent a confirmation code to
-					<span className="font-semibold">{email}</span>.
-					Enter it below to verify your email:
+					<span className="font-semibold ml-2">
+						{email}
+					</span>
+					. Enter it below to verify your email:
 				</p>
 
 				<form
