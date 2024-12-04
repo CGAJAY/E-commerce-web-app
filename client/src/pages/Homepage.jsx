@@ -2,6 +2,7 @@ import React from "react";
 import Carousel from "../components/Carousel";
 import ItemsCard from "../components/ItemsCard";
 import useAuthStore from "../store/useAuthStore";
+import AddCategory from "../components/AddCategory";
 
 const HomePage = () => {
 	// Access user state
@@ -13,7 +14,7 @@ const HomePage = () => {
 	if (isAuthenticated && user?.role === "admin") {
 		return (
 			<div>
-				<h1>Welcome Admin!</h1>
+				<AddCategory />
 			</div>
 		);
 	}
