@@ -137,10 +137,10 @@ const CartPage = () => {
 							<span className="w-full block -z-10 absolute top-5 border-2 border-black -right-2 bg-white">
 								h
 							</span>
-							<span className="mr-6">
-								CONTINUE SHOPPING
-							</span>
-							<FaArrowRight className="ml-2 inline-block" />
+							<div className="flex justify-between items-center">
+								<span className="">CHECKOUT</span>
+								<FaArrowRight className=" w-12" />
+							</div>
 						</Link>
 
 						<div className="my-8 space-x-2">
