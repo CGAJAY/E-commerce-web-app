@@ -51,7 +51,7 @@ const App = () => {
 					element={<EmailVerification />}
 				/>
 				<Route
-					path="payment"
+					path="/payment"
 					element={<CryptoPaymentPage />}
 				/>
 			</Routes>

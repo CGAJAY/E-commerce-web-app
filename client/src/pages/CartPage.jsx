@@ -1,13 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCartStore from "../store/useCartStore";
+import useAuthStore from "../store/useAuthStore";
 import {
 	FaArrowRight,
 	FaShoppingBag,
 } from "react-icons/fa";
 
 const CartPage = () => {
+	// Get cart data from cart store
 	const cart = useCartStore((state) => state.cart);
+	// Get user data from auth store
+	const user = useAuthStore((state) => state.user);
+
+	// React Router navigate function
+	const navigate = useNavigate();
 
 	console.log("Cart Contents:", cart[0]);
 	// console.log("Cart Contents:", cart[0].product);
@@ -17,6 +24,16 @@ const CartPage = () => {
 		(acc, item) => acc + item.price * item.quantity,
 		0
 	);
+
+	const handleCheckout = () => {
+		if (!user) {
+			// Redirect to profile page if not logged in
+			alert("Please login to proceed to checkout.");
+			navigate("/profile");
+		} else {
+			navigate("/payment");
+		}
+	};
 
 	return (
 		<div className="container mx-auto p-4">
@@ -130,8 +147,8 @@ const CartPage = () => {
 								</span>
 							</div>
 						</div>
-						<Link
-							to="/payment"
+						<button
+							onClick={handleCheckout}
 							className="block w-full relative bg-black border border-black px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:text-gray-500"
 						>
 							<span className="w-full block -z-10 absolute top-5 border-2 border-black -right-2 bg-white">
@@ -141,7 +158,7 @@ const CartPage = () => {
 								<span className="">CHECKOUT</span>
 								<FaArrowRight className=" w-12" />
 							</div>
-						</Link>
+						</button>
 
 						<div className="my-8 space-x-2">
 							<span className="block text-center">
