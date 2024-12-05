@@ -1,6 +1,7 @@
 import Order from "../db/models/order.js";
 
 // function to add items to cart
+// function to add items to cart
 export const addToCart = async (req, res) => {
 	const { productId, quantity } = req.body;
 	const userId = req.userId;
@@ -55,6 +56,61 @@ export const addToCart = async (req, res) => {
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Server error" });
+	}
+};
+export const syncCart = async (req, res) => {
+	const { cart } = req.body; // Expect an array of products
+	const userId = req.userId;
+	console.log(cart);
+
+	try {
+		// Check if the user already has a cart saved in the database
+		let existingOrder = await Order.findOne({
+			user: userId,
+			status: "Cart",
+		});
+
+		if (!existingOrder) {
+			// If no cart exists, create a new order with the provided cart items
+			existingOrder = new Order({
+				user: userId,
+				status: "Cart",
+				products: [],
+			});
+		}
+
+		// Map the incoming cart items to the existing order's products
+		cart.forEach((item) => {
+			const existingProduct = existingOrder.products.find(
+				(p) => p.product.toString() === item.productId
+			);
+
+			if (existingProduct) {
+				// If the product already exists, update its quantity
+				existingProduct.quantity += item.quantity;
+			} else {
+				// If the product is new, add it to the cart
+				existingOrder.products.push({
+					product: mongoose.Types.ObjectId(item.productId),
+					quantity: item.quantity,
+				});
+			}
+		});
+
+		// Save the updated or new order in the database
+		await existingOrder.save();
+
+		// Fetch the complete cart details to return to the frontend
+		const populatedCart = await Order.findOne({
+			user: userId,
+			status: "Cart",
+		}).populate("products.product");
+
+		// Return the updated cart
+		res.status(200).json({ cart: populatedCart.products });
+	} catch (error) {
+		console.error("Error syncing cart:", error);
+		res.status(500).json({ error: "Failed to sync cart" });
 	}
 };
 
