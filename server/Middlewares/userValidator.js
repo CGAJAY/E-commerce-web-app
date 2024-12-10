@@ -127,5 +127,9 @@ export const validateLogin = async (req, res, next) => {
 
 		// Call the next middleware function if all validations pass
 		next();
-	} catch (error) {}
+	} catch (error) {
+		return res
+			.status(401)
+			.json({ message: "server error" });
+	}
 };
