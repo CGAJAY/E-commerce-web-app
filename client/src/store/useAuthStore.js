@@ -1,10 +1,11 @@
 import { create } from "zustand";
+// import useCartStore from "./useCartStore";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
+// State to manage user info and authentication status
 const useAuthStore = create((set) => ({
-	// set to null, meaning no one is logged in by default.
-	user: null,
-	isAuthenticated: false,
+	user: null, // Default is no user is logged in
+	isAuthenticated: false, // Default is not authenticated
 	// Load user from cookie
 	loadUser: async () => {
 		try {
@@ -22,15 +23,19 @@ const useAuthStore = create((set) => ({
 				console.log(data);
 			} else {
 				set({ user: null, isAuthenticated: false });
-				console.log(data);
+				// console.log(data);
 			}
-		} catch {
+		} catch (error) {
+			console.error("Error loading user", error);
 			set({ user: null, isAuthenticated: false });
 		}
 	},
 	// function that accepts userData
-	login: (userData) =>
-		set({ user: userData, isAuthenticated: true }),
+	login: (userData) => {
+		set({ user: userData, isAuthenticated: true });
+		// Sync the cart to the database after successful login
+		// useCartStore.getState().syncCartToDatabase();
+	},
 	// function that clears the user state by setting it to null
 	logout: () => set({ user: null, isAuthenticated: false }),
 
