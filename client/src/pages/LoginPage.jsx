@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useAuthStore from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import useCartStore from "../store/useCartStore";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
+	const [username, setUsername] = useState(""); // State for username
+	const [password, setPassword] = useState(""); // State for password
 	const { login } = useAuthStore((state) => state);
+	const { syncCartToDatabase } = useCartStore(
+		(state) => state
+	);
 	const navigate = useNavigate();
 
 	const handleLogin = async (e) => {
@@ -34,13 +38,14 @@ const Login = () => {
 			const data = await response.json();
 
 			// Store user data in the Zustand store
-			login(data);
+			await login(data);
+			await syncCartToDatabase();
 
 			// Redirect to home page and scroll to the top
 			navigate("/profile");
 			window.scrollTo(0, 0); // Scrolls to the top of the page
 
-			// alert("Login successful");
+			alert("Login successful");
 		} catch (error) {
 			console.error("Login failed:", error.message);
 			alert("Login failed");

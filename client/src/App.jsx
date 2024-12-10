@@ -20,12 +20,14 @@ import {
 } from "react-router-dom";
 
 const App = () => {
-	const loadUser = useAuthStore((state) => state.loadUser);
+	const { loadUser, isAuthenticated } = useAuthStore(
+		(state) => state
+	);
 	const loadCart = useCartStore((state) => state.loadCart);
 
 	useEffect(() => {
-		loadCart(); // Load cart from localStorage
-	}, []);
+		loadCart();
+	}, [isAuthenticated]);
 
 	useEffect(() => {
 		loadUser(); // Loads user if valid session cookie is found
