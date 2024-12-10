@@ -52,13 +52,23 @@ const useCartStore = create((set, get) => ({
 					JSON.stringify(cart, null, 2)
 				);
 
-				await fetch(`${backendUrl}/api/v1/cart/add`, {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					credentials: "include",
-					// Convert cart data to JSON
-					body: JSON.stringify({ products: cart }),
-				});
+				const response = await fetch(
+					`${backendUrl}/api/v1/cart/add`,
+					{
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						credentials: "include",
+						// Convert cart data to JSON
+						body: JSON.stringify({
+							products: [
+								{
+									_id: item._id,
+									quantity: 1,
+								},
+							],
+						}),
+					}
+				);
 
 				if (!response.ok) {
 					throw new Error("Failed to add items to cart");
@@ -128,6 +138,70 @@ const useCartStore = create((set, get) => ({
 				set({ cart: JSON.parse(storedCart) });
 			}
 			console.log("Cart loaded and saved", get().cart);
+		}
+	},
+
+	// Function to sync loacalStorage with database when the user logs in
+	syncCartToDatabase: async () => {
+		// Get user's authentication status from auth store
+		const { isAuthenticated } = useAuthStore.getState();
+
+		if (isAuthenticated) {
+			// Check for a stored cart in localStorage
+			const storedCart = localStorage.getItem("cart");
+
+			if (storedCart && storedCart.length > 0) {
+				// parse the cart data
+				const cart = JSON.parse(storedCart);
+				console.log("Parsed cart:", cart);
+
+				try {
+					// Send the cart data to the backend to sync
+					const response = await fetch(
+						`${backendUrl}/api/v1/cart/sync-cart`,
+						{
+							method: "POST",
+							headers: {
+								"Content-type": "application/json",
+							},
+							credentials: "include",
+							body: JSON.stringify({ products: cart }),
+						}
+					);
+
+					// Log response status for debugging
+					console.log(
+						"Sync cart response status:",
+						response.status
+					);
+
+					if (!response.ok) {
+						throw new Error(
+							"Failed to sync cart with the database"
+						);
+					}
+
+					const data = await response.json();
+					console.log(
+						"Cart successfully synchronized",
+						data
+					);
+
+					// Clear localStorage after successful sync
+					localStorage.removeItem("cart");
+				} catch (error) {
+					console.log(
+						"Error syncing cart to database:",
+						error
+					);
+				}
+			} else {
+				console.log("No cart in localStorage to sync.");
+			}
+		} else {
+			console.log(
+				"User is not authenticated, skipping cart sync."
+			);
 		}
 	},
 }));
