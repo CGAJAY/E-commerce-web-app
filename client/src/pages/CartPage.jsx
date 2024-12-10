@@ -1,32 +1,119 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useCartStore from "../store/useCartStore";
+// import useCartStore from "../store/useCartStore";
 import useAuthStore from "../store/useAuthStore";
 import {
 	FaArrowRight,
 	FaShoppingBag,
 } from "react-icons/fa";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const CartPage = () => {
-	// Get cart data from cart store
-	const cart = useCartStore((state) => state.cart);
-	// Get user data from auth store
-	const user = useAuthStore((state) => state.user);
+	const { isAuthenticated } = useAuthStore(
+		(state) => state
+	);
+	const [cart, setCart] = useState([]);
+	const [totalPrice, setTotalPrice] = useState(0); // State to store the total price
 
 	// React Router navigate function
 	const navigate = useNavigate();
 
-	console.log("Cart Contents:", cart[0]);
-	// console.log("Cart Contents:", cart[0].product);
+	// Fetch cart details based on authentication status
+	const fetchCart = async () => {
+		try {
+			if (isAuthenticated) {
+				// Fetch cart for logged-in users
+				const response = await fetch(
+					`${backendUrl}/api/v1/cart`,
+					{
+						method: "GET", // Use GET to retrieve data from the server
+						headers: { "Content-Type": "application/json" },
+						credentials: "include",
+					}
+				);
 
-	// Calculate Subtotal and Total
-	const subtotal = cart.reduce(
-		(acc, item) => acc + item.price * item.quantity,
-		0
-	);
+				if (!response.ok) {
+					throw new Error("Failed to fetch cart");
+				}
+
+				const data = await response.json();
+				setCart((prevCart) => {
+					console.log("Previous cart state:", prevCart);
+					console.log(
+						"New cart state from backend:",
+						data.cart
+					);
+					return data.cart;
+				});
+			} else {
+				// Fetch product details for items stored in localStorage
+				const localCart =
+					JSON.parse(localStorage.getItem("cart")) || [];
+				const productIds = localCart.map(
+					(item) => item._id
+				);
+
+				if (productIds.length > 0) {
+					const response = await fetch(
+						`${backendUrl}/api/v1/cart/products/details`,
+						{
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							credentials: "include",
+							body: JSON.stringify({ productIds }),
+						}
+					);
+
+					if (!response.ok) {
+						throw new Error(
+							"Failed to fetch product details"
+						);
+					}
+
+					const data = await response.json();
+
+					const detailedCart = localCart.map((cartItem) => {
+						const productDetails = data.cart.find(
+							(product) => product._id === cartItem._id
+						);
+						return {
+							...cartItem,
+							...productDetails,
+							quantity: cartItem.quantity || 1, // Ensure quantity from localStorage is used
+						};
+					});
+
+					setCart(detailedCart);
+				}
+			}
+		} catch (error) {
+			console.error("Error fetching cart:", error);
+			setCart([]); // Reset cart on error
+		}
+	};
+
+	// Calculate total price based on cart items
+	const calculateTotalPrice = () => {
+		const price = cart.reduce(
+			(acc, item) => acc + item.price * item.quantity,
+			0
+		);
+		setTotalPrice(price);
+	};
+
+	useEffect(() => {
+		fetchCart();
+	}, [isAuthenticated]);
+
+	useEffect(() => {
+		// Recalculate total price whenever the cart changes
+		calculateTotalPrice();
+	}, [cart]);
 
 	const handleCheckout = () => {
-		if (!user) {
+		if (!isAuthenticated) {
 			// Redirect to profile page if not logged in
 			alert("Please login to proceed to checkout.");
 			navigate("/profile");
@@ -135,7 +222,8 @@ const CartPage = () => {
 									Subtotal:
 								</span>
 								<span className="text-gray-800">
-									${subtotal.toFixed(2)}
+									${totalPrice.toFixed(2)}{" "}
+									{/* Display the total price */}
 								</span>
 							</div>
 							<div className="flex justify-between mb-2">
@@ -143,7 +231,8 @@ const CartPage = () => {
 									Total:
 								</span>
 								<span className="text-gray-800 font-bold">
-									${subtotal.toFixed(2)}
+									${totalPrice.toFixed(2)}{" "}
+									{/* Display the total price */}
 								</span>
 							</div>
 						</div>
