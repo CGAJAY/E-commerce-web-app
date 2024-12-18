@@ -26,7 +26,8 @@ export const productFileUpload = async (req, res) => {
 		}
 
 		try {
-			const photoUrl = `http://localhost:3000/uploads/${req.file.filename}`;
+			const server = process.env.BACKEND_URL;
+			const photoUrl = `${server}/uploads/${req.file.filename}`;
 			res.status(200).json({
 				message: "File uploaded successfully!",
 				photo: photoUrl,
