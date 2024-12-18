@@ -86,12 +86,12 @@ const SignUp = () => {
 					)}`
 				);
 			} else {
-				// If there was a problem sending the request, show a generic error message
-				setError(
-					"Failed to sign up. Please try again later."
-				);
+				// If there was a problem sending the request, show a the error message
+				setError(data.message);
+				console.error(data.message);
 			}
 		} catch (error) {
+			console.error(error);
 			setError(
 				"Failed to sign up. Please try again later."
 			);

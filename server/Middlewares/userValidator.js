@@ -58,7 +58,7 @@ export const validateUserRegistration = async (
 		if (password.length < 6) {
 			return res.status(400).json({
 				message:
-					"password must be atleast 6 characters long",
+					"Password must be atleast 6 characters long",
 			});
 		}
 
