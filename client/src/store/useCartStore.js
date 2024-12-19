@@ -15,6 +15,8 @@ const useCartStore = create((set, get) => ({
 		// Get the current cart state
 		const currentCart = get().cart;
 
+		console.log({ currentCart });
+
 		// Check if the item already exists in the cart
 		const existingItem = currentCart.find(
 			(cartItem) => cartItem._id === item._id
@@ -110,12 +112,12 @@ const useCartStore = create((set, get) => ({
 				}
 				// Parse the response as JSON
 				const data = await response.json();
-				console.log(data);
+				console.log({ loadCartData: data });
 
 				// Transform the API response to only include product._id and quantity
-				const minimalCart = data.products.map((item) => ({
+				const minimalCart = data.cart.map((item) => ({
 					// Extract _id from the nested product object
-					_id: item.product._id,
+					_id: item._id,
 					// Extract quantity directly
 					quantity: item.quantity,
 				}));
@@ -187,6 +189,8 @@ const useCartStore = create((set, get) => ({
 						data
 					);
 
+					set({ cart: data.products });
+
 					// Clear localStorage after successful sync
 					localStorage.removeItem("cart");
 				} catch (error) {
@@ -203,6 +207,10 @@ const useCartStore = create((set, get) => ({
 				"User is not authenticated, skipping cart sync."
 			);
 		}
+	},
+
+	clearCart: () => {
+		set({ cart: [] });
 	},
 }));
 

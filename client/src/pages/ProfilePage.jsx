@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
 import { FaCamera } from "react-icons/fa"; // FontAwesome camera icon
+import useCartStore from "../store/useCartStore";
 
 const Profile = () => {
-	const { user, logout, updateProfilePhoto } =
-		useAuthStore();
+	const { user, logout } = useAuthStore();
 	const navigate = useNavigate();
+	const { clearCart } = useCartStore();
 
 	const handleLogout = async (e) => {
 		e.preventDefault();
@@ -14,7 +15,8 @@ const Profile = () => {
 		try {
 			// Send login data to the backend
 			const response = await fetch(
-				"http://localhost:3000/api/v1/auth/logout",
+				import.meta.env.VITE_BACKEND_URL +
+					"/api/v1/auth/logout",
 				{
 					method: "DELETE",
 					headers: { "Content-Type": "application/json" },
@@ -27,7 +29,9 @@ const Profile = () => {
 				throw new Error("Failed to logout");
 			}
 
-			logout();
+			await logout();
+
+			clearCart();
 
 			// Redirect to home page and scroll to the top
 			navigate("/profile");

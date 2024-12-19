@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
 	FaBars,
@@ -17,6 +17,11 @@ const Header = ({ onCategorySelect, resetCategory }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	// Access cart items from Zustand
 	const cart = useCartStore((state) => state.cart);
+
+	const [cartLength, setCartLength] = useState(
+		cart?.length || 0
+	);
+
 	// Access user state
 	const { user, isAuthenticated } = useAuthStore(
 		(state) => state
@@ -42,6 +47,11 @@ const Header = ({ onCategorySelect, resetCategory }) => {
 	];
 
 	// Helper function to render admin UI
+
+	useEffect(() => {
+		console.log("Cart updated");
+		setCartLength(cart?.length || 0);
+	}, [cart]);
 
 	if (isAuthenticated && user?.role === "admin") {
 		return (
@@ -115,7 +125,7 @@ const Header = ({ onCategorySelect, resetCategory }) => {
 							<FaShoppingBag className="h-5 w-5" />
 
 							<span className="absolute -top-2 -right-2 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-blue-500 rounded-full">
-								{cart.length}
+								{cartLength}
 							</span>
 						</Link>
 						{/* <a href="#" className="hover:text-yellow-500">

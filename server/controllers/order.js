@@ -257,9 +257,10 @@ export const getCart = async (req, res) => {
 		}).populate("products.product");
 
 		if (!order) {
-			return res
-				.status(404)
-				.json({ message: "No items in the cart" }); // Empty cart
+			return res.json({
+				cart: [],
+				message: "No items in the cart",
+			}); // Empty cart
 		}
 
 		// Calculate total price for the cart

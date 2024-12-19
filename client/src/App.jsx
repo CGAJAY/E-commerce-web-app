@@ -26,6 +26,8 @@ const App = () => {
 	const loadCart = useCartStore((state) => state.loadCart);
 
 	useEffect(() => {
+		console.log("isAuth Changed: ", isAuthenticated);
+
 		loadCart();
 	}, [isAuthenticated]);
 
