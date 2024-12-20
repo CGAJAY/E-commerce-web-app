@@ -209,7 +209,7 @@ const useCartStore = create((set, get) => ({
 		}
 	},
 
-	clearCart: () => {
+	clearCart: async () => {
 		set({ cart: [] });
 	},
 }));
